@@ -9,9 +9,16 @@ import java.util.List;
 @Service.Singleton
 public class VanillaSkillService implements SkillService {
 
+    private final List<SkillProvider> providers;
+
+    @Service.Inject
+    public VanillaSkillService(List<SkillProvider> providers) {
+        this.providers = providers;
+    }
+
     @Override
     public List<SkillProvider> skillList() {
-        return List.of();
+        return providers;
     }
 
 }
