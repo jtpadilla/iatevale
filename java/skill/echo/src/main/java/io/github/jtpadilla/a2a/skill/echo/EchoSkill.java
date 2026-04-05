@@ -11,7 +11,7 @@ public class EchoSkill implements SkillProvider {
     @Override
     public AgentSkill getSkillCard() {
         return AgentSkill.newBuilder()
-                .setId("echo")
+                .setId("079bd671-8f74-4638-8b88-5d87e7159797")
                 .setName("Echo")
                 .setDescription("Echoes input")
                 .addTags("echo")
