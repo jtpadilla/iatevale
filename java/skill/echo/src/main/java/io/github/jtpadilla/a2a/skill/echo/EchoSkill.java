@@ -31,7 +31,6 @@ public class EchoSkill implements SkillProvider {
         switch (context.request()) {
             case SkillRequestSimple simple -> sendMessage(simple.request(), simple.responseObserver());
             case SkillRequestStream stream -> sendStreamingMessage(stream.request(), stream.responseObsever());
-            default -> throw new IllegalStateException("Unexpected value: " + context.request());
         }
     }
 

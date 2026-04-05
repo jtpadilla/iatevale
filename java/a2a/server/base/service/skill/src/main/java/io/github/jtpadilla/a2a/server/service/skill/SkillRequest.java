@@ -2,7 +2,7 @@ package io.github.jtpadilla.a2a.server.service.skill;
 
 import com.google.lf.a2a.v1.SendMessageRequest;
 
-public sealed class SkillRequest permits SkillRequestSimple, SkillRequestStream {
+public abstract sealed class SkillRequest permits SkillRequestSimple, SkillRequestStream {
 
     final private SendMessageRequest request;
 
