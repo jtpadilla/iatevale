@@ -1,0 +1,60 @@
+load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
+
+java_library(
+    name = "common",
+    visibility = ["//visibility:public"],
+    exports = [
+        "@maven//:io_helidon_common_helidon_common",
+        "@maven//:io_helidon_common_helidon_common_types",
+    ],
+)
+
+java_plugin(
+    name = "service_plugin",
+    processor_class = "io.helidon.codegen.apt.AptProcessor",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@maven//:io_helidon_codegen_helidon_codegen_apt",
+        "@maven//:io_helidon_service_helidon_service_codegen",
+    ],
+)
+
+java_library(
+    name = "service",
+    exported_plugins = [
+        ":service_plugin",
+    ],
+    plugins = [
+        ":service_plugin",
+    ],
+    visibility = ["//visibility:public"],
+    exports = [
+        ":common",
+        "@maven//:io_helidon_service_helidon_service_registry",
+    ],
+)
+
+java_plugin(
+    name = "builder_plugin",
+    processor_class = "io.helidon.codegen.apt.AptProcessor",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@maven//:io_helidon_builder_helidon_builder_codegen",
+        "@maven//:io_helidon_codegen_helidon_codegen_apt",
+    ],
+)
+
+java_library(
+    name = "builder",
+    exported_plugins = [
+        ":builder_plugin",
+    ],
+    plugins = [
+        ":builder_plugin",
+    ],
+    visibility = ["//visibility:public"],
+    exports = [
+        ":common",
+        "@maven//:io_helidon_builder_helidon_builder_api",
+    ],
+)

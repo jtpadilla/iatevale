@@ -1,0 +1,44 @@
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+proto_library(
+    name = "annotations_proto",
+    srcs = ["annotations.proto"],
+    deps = [
+        ":http_proto",
+        "@protobuf//:descriptor_proto",
+    ],
+)
+
+proto_library(
+    name = "client_proto",
+    srcs = ["client.proto"],
+    deps = [
+        ":launch_stage_proto",
+        "@protobuf//:descriptor_proto",
+        "@protobuf//:duration_proto",
+    ],
+)
+
+proto_library(
+    name = "field_behavior_proto",
+    srcs = ["field_behavior.proto"],
+    deps = [
+        "@protobuf//:descriptor_proto",
+    ],
+)
+
+proto_library(
+    name = "http_proto",
+    srcs = ["http.proto"],
+    deps = [
+    ],
+)
+
+proto_library(
+    name = "launch_stage_proto",
+    srcs = ["launch_stage.proto"],
+    deps = [
+    ],
+)

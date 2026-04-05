@@ -1,0 +1,34 @@
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
+load("@protobuf//bazel:java_proto_library.bzl", "java_proto_library")
+load("@grpc-java//:java_grpc_library.bzl", "java_grpc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+proto_library(
+    name = "a2a_proto",
+    srcs = ["a2a.proto"],
+    deps = [
+        "//proto/google/api:annotations_proto",
+        "//proto/google/api:client_proto",
+        "//proto/google/api:field_behavior_proto",
+        "@protobuf//:empty_proto",
+        "@protobuf//:struct_proto",
+        "@protobuf//:timestamp_proto",
+    ],
+)
+
+java_proto_library(
+    name = "a2a_java_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":a2a_proto",
+    ],
+)
+
+java_grpc_library(
+    name = "a2a_java_grpc",
+    srcs = [":a2a_proto"],
+    deps = [
+        ":a2a_java_proto",
+    ],
+)
