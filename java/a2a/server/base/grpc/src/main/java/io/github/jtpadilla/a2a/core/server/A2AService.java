@@ -8,7 +8,6 @@ import io.github.jtpadilla.a2a.server.service.skill.SkillService;
 import io.grpc.stub.StreamObserver;
 import io.helidon.service.registry.Service;
 
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service.Singleton
