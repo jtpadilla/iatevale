@@ -10,7 +10,7 @@ java_library(
         "@protobuf//:protobuf_java_util",
     ],
     deps = [
-        "//java/util/util",
+        "//java/util/misc",
         "@protobuf//:protobuf_java",
         "@protobuf//:protobuf_java_util",
     ],
