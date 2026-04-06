@@ -13,6 +13,7 @@ java_binary(
         "//java/a2a/server/base/service/skill",
         "//java/a2a/server/vanilla/service/skill",
         "//java/skill/echo",
+        "//java/skill/datetime",
         "//java/third_party/helidon:service",
         "//proto/lf/a2a/v1:a2a_java_grpc",
         "//proto/lf/a2a/v1:a2a_java_proto",
