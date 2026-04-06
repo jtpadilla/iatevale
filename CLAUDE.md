@@ -28,7 +28,12 @@ Hay una caché de disco compartida en `~/.cache/ai-helidon-labs-cache` (usada ta
 
 ## Visión general de la arquitectura
 
-El proyecto implementa el **protocolo A2A (Agent-to-Agent)** — un estándar gRPC + HTTP para la interoperabilidad entre agentes. El único producto ejecutable es `//java/product/simpleagent`, que expone:
+El proyecto implementa el **protocolo A2A (Agent-to-Agent)** — un estándar gRPC + HTTP para la interoperabilidad entre agentes. La especificación oficial está en:
+- Sitio principal: https://a2a-protocol.org/
+- Especificación: https://a2a-protocol.org/latest/specification/
+- Definiciones: https://a2a-protocol.org/latest/definitions/
+
+El único producto ejecutable es `//java/product/simpleagent`, que expone:
 - Un endpoint gRPC (`lf.a2a.v1.A2AService`) en el puerto 8080
 - Un endpoint HTTP en `/.well-known/agent.json` que sirve la agent card
 
