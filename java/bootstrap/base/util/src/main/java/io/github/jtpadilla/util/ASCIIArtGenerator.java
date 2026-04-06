@@ -43,15 +43,16 @@ public class ASCIIArtGenerator {
     /**
      * Prints ASCII art for the specified text. For size, you can use predefined sizes or a custom size.
      * Usage - printTextArt("Hi",30,ASCIIArtFont.ART_FONT_SERIF,"@");
+     *
      * @param artText
      * @param textHeight - Use a predefined size or a custom type
-     * @param fontType - Use one of the available fonts
-     * @param artSymbol - Specify the character for printing the ascii art
+     * @param fontType   - Use one of the available fonts
+     * @param artSymbol  - Specify the character for printing the ascii art
      * @throws Exception
      */
     private java.util.List<String> printTextArt(String artText, int textHeight, ASCIIArtFont fontType, String artSymbol) {
 
-        java.util.ArrayList<String>  result = new java.util.ArrayList<>();
+        java.util.ArrayList<String> result = new java.util.ArrayList<>();
 
         String fontName = fontType.getValue();
         int imageWidth = findImageWidth(textHeight, artText, fontName);
@@ -78,6 +79,7 @@ public class ASCIIArtGenerator {
     /**
      * Convenience method for printing ascii text art.
      * Font default - Dialog,  Art symbol default - *
+     *
      * @param artText
      * @param textHeight
      * @throws Exception
@@ -88,6 +90,7 @@ public class ASCIIArtGenerator {
 
     /**
      * Using the Current font and current art text find the width of the full image
+     *
      * @param textHeight
      * @param artText
      * @param fontName
@@ -102,6 +105,7 @@ public class ASCIIArtGenerator {
 
     /**
      * Find where the text baseline should be drawn so that the characters are within image
+     *
      * @param g
      * @param font
      * @return

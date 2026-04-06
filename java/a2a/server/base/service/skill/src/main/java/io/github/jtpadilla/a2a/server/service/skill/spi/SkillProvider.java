@@ -7,5 +7,6 @@ import io.helidon.service.registry.Service;
 @Service.Contract
 public interface SkillProvider {
     AgentSkill getSkillCard();
+
     void executeSkill(SkillContext context);
 }

@@ -4,7 +4,8 @@
 
 ## Overview
 
-Add a new A2A skill `datetime` that returns the current UTC date and time in ISO 8601 format (`2026-04-06T14:32:05Z`) in response to any incoming message.
+Add a new A2A skill `datetime` that returns the current UTC date and time in ISO 8601 format (`2026-04-06T14:32:05Z`) in
+response to any incoming message.
 
 ## Architecture
 
@@ -25,13 +26,14 @@ New Bazel module at `java/skill/datetime/`, following the same structure as the 
 
 - Implements `SkillProvider`, annotated `@Service.Singleton`
 - Skill card:
-  - `id`: fresh UUID
-  - `name`: `"DateTime"`
-  - `description`: `"Returns current UTC date and time in ISO 8601 format"`
-  - `tags`: `["datetime", "time", "date"]`
+    - `id`: fresh UUID
+    - `name`: `"DateTime"`
+    - `description`: `"Returns current UTC date and time in ISO 8601 format"`
+    - `tags`: `["datetime", "time", "date"]`
 - Uses `java.time.Instant.now()` formatted with `DateTimeFormatter.ISO_INSTANT` (no external dependencies)
 - `sendMessage`: captures instant → returns a `Message` (role `ROLE_AGENT`) with the formatted string as the sole `Part`
-- `sendStreamingMessage`: emits `TASK_STATE_WORKING` status update first, then the same datetime `Message`, mirroring the echo streaming pattern
+- `sendStreamingMessage`: emits `TASK_STATE_WORKING` status update first, then the same datetime `Message`, mirroring
+  the echo streaming pattern
 
 ## Data Flow
 
@@ -46,6 +48,7 @@ Client → SendMessage / SendStreamingMessage
 ## BUILD Dependencies
 
 Same as `echo`:
+
 - `//java/a2a/server/base/service/skill`
 - `//java/third_party/helidon:service`
 - `//proto/lf/a2a/v1:a2a_java_grpc`

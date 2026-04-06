@@ -52,7 +52,7 @@ public class DelayedReseteableExecutor {
         @Override
         public void run() {
             try {
-                while(thread != null) {
+                while (thread != null) {
                     TimeUnit.SECONDS.sleep(2);
                     synchronized (DelayedReseteableExecutor.this) {
                         if (limit != null && Instant.now().isAfter(limit)) {

@@ -1,6 +1,7 @@
 # iatevale
 
-Implementación del protocolo **A2A (Agent-to-Agent)** sobre **Helidon 4** y **gRPC**, orientada a evaluar y experimentar con la interoperabilidad entre agentes de IA.
+Implementación del protocolo **A2A (Agent-to-Agent)** sobre **Helidon 4** y **gRPC**, orientada a evaluar y experimentar
+con la interoperabilidad entre agentes de IA.
 
 ## Requisitos
 
@@ -15,10 +16,10 @@ bazel run //java/product/simpleagent:simpleagent
 
 El servidor arranca en el puerto **8080** y expone:
 
-| Endpoint | Descripción |
-|---|---|
+| Endpoint                         | Descripción           |
+|----------------------------------|-----------------------|
 | `/.well-known/agent.json` (HTTP) | Agent card del agente |
-| `lf.a2a.v1.A2AService` (gRPC) | Servicio A2A |
+| `lf.a2a.v1.A2AService` (gRPC)    | Servicio A2A          |
 
 ## Compilar y ejecutar tests
 
@@ -38,6 +39,7 @@ bazel test //java/bootstrap/unit:test
 El directorio `java/product/simpleagent/src/resources/` contiene plantillas para registrar el agente en Gemini CLI:
 
 **Opción 1 — con servidor arriba** (copia `sandbox-url.md` como `.gemini/agents/sandbox.md`):
+
 ```yaml
 ---
 kind: remote
@@ -47,6 +49,7 @@ agent_card_url: http://localhost:8080/.well-known/agent.json
 ```
 
 **Opción 2 — sin servidor** (copia `sandbox-inline.md` como `.gemini/agents/sandbox.md`):
+
 ```yaml
 ---
 kind: remote
@@ -57,6 +60,7 @@ agent_card_json: |
 ```
 
 Comandos útiles en Gemini CLI:
+
 ```
 /agents list
 /agents enable a2a-sandbox

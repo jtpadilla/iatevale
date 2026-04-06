@@ -77,7 +77,7 @@ public class TemporalContainer<T> {
         listener.processElements(bufferCopy);
         buffer.clear();
         restartTimer();
-}
+    }
 
     private synchronized void restartTimer() {
         cancelCurrentTask();

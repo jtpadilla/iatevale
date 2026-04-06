@@ -18,8 +18,8 @@ public class WellKnownHandler implements HttpService {
     public WellKnownHandler(AgentCardService agentCardService) {
         try {
             this.agentCardJson = JsonFormat.printer()
-                        .alwaysPrintFieldsWithNoPresence()
-                        .print(agentCardService.agentCard());
+                    .alwaysPrintFieldsWithNoPresence()
+                    .print(agentCardService.agentCard());
         } catch (InvalidProtocolBufferException e) {
             throw new RuntimeException("No se ha podido convertir a JSON el AgentCard", e);
         }

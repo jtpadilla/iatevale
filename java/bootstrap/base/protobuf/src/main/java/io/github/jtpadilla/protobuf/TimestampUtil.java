@@ -165,5 +165,5 @@ public class TimestampUtil {
     static public String formatTimestamp(Timestamp timestamp) {
         return TimeUtil.formatLocalDataTime(timestampToLocalDatetime(timestamp));
     }
-    
+
 }

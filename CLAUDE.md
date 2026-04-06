@@ -28,12 +28,15 @@ Hay una caché de disco compartida en `~/.cache/ai-helidon-labs-cache` (usada ta
 
 ## Visión general de la arquitectura
 
-El proyecto implementa el **protocolo A2A (Agent-to-Agent)** — un estándar gRPC + HTTP para la interoperabilidad entre agentes. La especificación oficial está en:
+El proyecto implementa el **protocolo A2A (Agent-to-Agent)** — un estándar gRPC + HTTP para la interoperabilidad entre
+agentes. La especificación oficial está en:
+
 - Sitio principal: https://a2a-protocol.org/
 - Especificación: https://a2a-protocol.org/latest/specification/
 - Definiciones: https://a2a-protocol.org/latest/definitions/
 
 El único producto ejecutable es `//java/product/simpleagent`, que expone:
+
 - Un endpoint gRPC (`lf.a2a.v1.A2AService`) en el puerto 8080
 - Un endpoint HTTP en `/.well-known/agent.json` que sirve la agent card
 
@@ -63,6 +66,7 @@ java/bootstrap/          # Librerías compartidas (no específicas de A2A)
 ### Inyección de dependencias
 
 El proyecto usa **Helidon 4 Service Registry** — no Spring ni CDI. Anotaciones clave:
+
 - `@Service.Singleton` — marca una clase como servicio singleton
 - `@Service.Inject` — inyección por constructor
 - `@Service.Contract` — marca una interfaz como contrato de servicio (p.ej. `SkillProvider`)
@@ -70,9 +74,11 @@ El proyecto usa **Helidon 4 Service Registry** — no Spring ni CDI. Anotaciones
 ### Añadir un skill
 
 Para añadir un nuevo skill:
+
 1. Implementar `SkillProvider` (de `//java/a2a/server/base/service/skill`) anotado con `@Service.Singleton`
 2. Añadirlo como dependencia de `//java/product/simpleagent:simpleagent` en su `BUILD.bazel`
-3. Sobreescribir `VanillaSkillService` o inyectar directamente — el registro de Helidon descubre automáticamente las implementaciones de `@Service.Contract`
+3. Sobreescribir `VanillaSkillService` o inyectar directamente — el registro de Helidon descubre automáticamente las
+   implementaciones de `@Service.Contract`
 
 Ver `//java/skill/echo` como implementación de referencia mínima.
 
@@ -145,11 +151,13 @@ grpcurl -plaintext \
   localhost:8080 lf.a2a.v1.A2AService/GetTask
 ```
 
-> Si el servidor no tiene reflexión gRPC habilitada, hay que pasar el proto con `-proto proto/lf/a2a/v1/a2a.proto` y `-import-path .` a grpcurl.
+> Si el servidor no tiene reflexión gRPC habilitada, hay que pasar el proto con `-proto proto/lf/a2a/v1/a2a.proto` y
+`-import-path .` a grpcurl.
 
 ### Paquete Proto
 
 El proto A2A está en `proto/lf/a2a/v1/a2a.proto`. Targets generados:
+
 - `//proto/lf/a2a/v1:a2a_java_proto` — mensajes protobuf
 - `//proto/lf/a2a/v1:a2a_java_grpc` — stubs gRPC
 

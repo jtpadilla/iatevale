@@ -1,10 +1,14 @@
 # DateTime Skill Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:
+> executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Create a `datetime` A2A skill that returns the current UTC date/time in ISO 8601 format in response to any message, and wire it into `simpleagent`.
+**Goal:** Create a `datetime` A2A skill that returns the current UTC date/time in ISO 8601 format in response to any
+message, and wire it into `simpleagent`.
 
-**Architecture:** New Bazel module `//java/skill/datetime` containing a single `DateTimeSkill` class implementing `SkillProvider`. Uses `java.time.Instant` + `DateTimeFormatter.ISO_INSTANT` from the JDK standard library — no new Maven dependencies. Installed into `simpleagent` by adding it to that binary's `deps`.
+**Architecture:** New Bazel module `//java/skill/datetime` containing a single `DateTimeSkill` class implementing
+`SkillProvider`. Uses `java.time.Instant` + `DateTimeFormatter.ISO_INSTANT` from the JDK standard library — no new Maven
+dependencies. Installed into `simpleagent` by adding it to that binary's `deps`.
 
 **Tech Stack:** Java 21, Bazel 8.6.0, Helidon 4 Service Registry, gRPC (proto A2A v1)
 
@@ -13,6 +17,7 @@
 ### Task 1: Create `DateTimeSkill.java`
 
 **Files:**
+
 - Create: `java/skill/datetime/src/main/java/io/github/jtpadilla/a2a/skill/datetime/DateTimeSkill.java`
 
 - [ ] **Step 1: Create directory structure**
@@ -116,6 +121,7 @@ public class DateTimeSkill implements SkillProvider {
 ### Task 2: Create `BUILD.bazel` for the datetime module
 
 **Files:**
+
 - Create: `java/skill/datetime/BUILD.bazel`
 
 - [ ] **Step 1: Write `BUILD.bazel`**
@@ -160,6 +166,7 @@ git commit -m "feat: add DateTime skill (returns ISO 8601 UTC datetime)"
 ### Task 3: Wire datetime skill into simpleagent
 
 **Files:**
+
 - Modify: `java/product/simpleagent/BUILD.bazel`
 
 - [ ] **Step 1: Add `//java/skill/datetime` to simpleagent deps**
@@ -238,4 +245,5 @@ grpcurl -plaintext \
   localhost:8080 lf.a2a.v1.A2AService/SendStreamingMessage
 ```
 
-Expected: two responses — first a `statusUpdate` with `TASK_STATE_WORKING`, then a `message` whose `parts[0].text` is an ISO 8601 UTC timestamp.
+Expected: two responses — first a `statusUpdate` with `TASK_STATE_WORKING`, then a `message` whose `parts[0].text` is an
+ISO 8601 UTC timestamp.

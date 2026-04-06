@@ -51,7 +51,7 @@ public class BytesUtils {
         byte[] data = new byte[len / 2]; // Cada par de caracteres representa un byte, por lo que el tamaño es len/2
         for (int i = 0; i < len; i += 2) {
             // Convertimos cada par de caracteres hexadecimales en un byte
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16));
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
     }

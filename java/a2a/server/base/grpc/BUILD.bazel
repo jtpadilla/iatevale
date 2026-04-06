@@ -11,7 +11,6 @@ java_library(
         "//java/third_party/helidon:service",
         "//proto/lf/a2a/v1:a2a_java_grpc",
         "//proto/lf/a2a/v1:a2a_java_proto",
-        "@maven//:com_google_adk_google_adk",
         "@maven//:io_grpc_grpc_api",
         "@maven//:io_grpc_grpc_stub",
         "@maven//:io_helidon_http_helidon_http",

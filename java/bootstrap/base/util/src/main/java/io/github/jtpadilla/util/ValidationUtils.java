@@ -8,15 +8,16 @@ import java.util.function.Supplier;
 public final class ValidationUtils {
 
     // Hacemos el constructor privado para que no se pueda instanciar
-    private ValidationUtils() {}
+    private ValidationUtils() {
+    }
 
     /**
      * Comprueba que el objeto de referencia no sea nulo; de lo contrario,
      * lanza una excepción proporcionada por el Supplier.
      *
-     * @param <T> El tipo del objeto a verificar.
-     * @param <E> El tipo de la excepción a lanzar (debe ser una RuntimeException).
-     * @param obj La referencia del objeto a verificar.
+     * @param <T>               El tipo del objeto a verificar.
+     * @param <E>               El tipo de la excepción a lanzar (debe ser una RuntimeException).
+     * @param obj               La referencia del objeto a verificar.
      * @param exceptionSupplier El Supplier que genera la excepción a lanzar.
      * @return El objeto 'obj' si no es nulo (permite asignaciones encadenadas).
      * @throws E si 'obj' es nulo.

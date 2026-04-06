@@ -1,4 +1,5 @@
 load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_library", "java_test")
+
 package(default_visibility = ["//visibility:public"])
 
 java_library(
@@ -9,7 +10,7 @@ java_library(
         "@protobuf//:protobuf_java_util",
     ],
     deps = [
-        "//java/bootstrap/base/util:util",
+        "//java/bootstrap/base/util",
         "@protobuf//:protobuf_java",
         "@protobuf//:protobuf_java_util",
     ],

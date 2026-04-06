@@ -35,18 +35,19 @@ public class DelayedBiConsumer<T, U> {
     /**
      * Verifica si el BiConsumer ha sido configurado.
      *
-     * @return  {@code true} si el BiConsumer se ha configurado (no es nulo),
-     *          {@code false} en caso contrario.
+     * @return {@code true} si el BiConsumer se ha configurado (no es nulo),
+     * {@code false} en caso contrario.
      */
     public boolean isConfigured() {
         return consumerRef.get() != null;
     }
 
     /**
-     *  Intenta ejecutar el BiConsumer.
-     *  Si el BiConsumer no está configurado, lanza una excepción.
-     *  Esta es una alternativa a {@link #accept(Object, Object)}
-     *  para casos donde se *requiere* que el BiConsumer esté presente.
+     * Intenta ejecutar el BiConsumer.
+     * Si el BiConsumer no está configurado, lanza una excepción.
+     * Esta es una alternativa a {@link #accept(Object, Object)}
+     * para casos donde se *requiere* que el BiConsumer esté presente.
+     *
      * @param t El primer argumento
      * @param u El segundo argumento
      * @throws IllegalStateException Si el BiConsumer no se ha configurado todavía.
@@ -73,8 +74,8 @@ public class DelayedBiConsumer<T, U> {
      * Ejecuta el BiConsumer si está configurado. Si no está configurado,
      * ejecuta el Runnable proporcionado.
      *
-     * @param t       El primer argumento para el BiConsumer.
-     * @param u       El segundo argumento para el BiConsumer.
+     * @param t               El primer argumento para el BiConsumer.
+     * @param u               El segundo argumento para el BiConsumer.
      * @param onNotConfigured El Runnable a ejecutar si el BiConsumer no está configurado.
      */
     public void acceptOrElse(T t, U u, Runnable onNotConfigured) {

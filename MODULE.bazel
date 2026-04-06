@@ -51,10 +51,7 @@ maven.install(
         "tools.jackson.core:jackson-databind",
 
         ## Librerias para interactuar con Gemini
-        "com.google.genai:google-genai:1.40.0",
-
-        ## Agent Development Kit
-        "com.google.adk:google-adk:1.0.0",
+        "com.google.genai:google-genai:1.46.0",
 
         ## Tests complejos
         "org.awaitility:awaitility:4.1.1",
@@ -89,6 +86,8 @@ maven.install(
         "io.grpc:grpc-netty-shaded",
 
         ## Helidon 4 (Service Registry)
+        # config
+        "io.helidon.config:helidon-config",
         # common
         "io.helidon.common:helidon-common",
         "io.helidon.common:helidon-common-types",
