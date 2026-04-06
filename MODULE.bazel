@@ -54,7 +54,7 @@ maven.install(
         "com.google.genai:google-genai:1.40.0",
 
         ## Agent Development Kit
-        "com.google.adk:google-adk:0.6.0",
+        "com.google.adk:google-adk:1.0.0",
 
         ## Tests complejos
         "org.awaitility:awaitility:4.1.1",
