@@ -1,4 +1,4 @@
-package io.github.jtpadilla.util.test;
+package io.github.jtpadilla.util.misc.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -13,7 +13,7 @@ java_library(
 java_test(
     name = "AllTests",
     srcs = glob(["src/test/java/**/*.java"]),
-    test_class = "io.github.jtpadilla.util.test.UtilAllTests",
+    test_class = "io.github.jtpadilla.util.misc.test.UtilAllTests",
     deps = [
         ":misc",
     ],

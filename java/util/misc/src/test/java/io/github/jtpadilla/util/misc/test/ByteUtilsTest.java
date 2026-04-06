@@ -1,4 +1,4 @@
-package io.github.jtpadilla.util.test;
+package io.github.jtpadilla.util.misc.test;
 
 import io.github.jtpadilla.util.misc.BytesUtils;
 import org.junit.Test;
