@@ -1,2 +1,2 @@
 gemma:
-  api-key: "${GEMMA_API_KEY}"
+  api-key: "${AISTUDIO_API_KEY}"
