@@ -1,7 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 
 java_binary(
-    name = "getaiexample",
+    name = "genaiexample",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "io.github.jtpadilla.product.genaiexample.GenaiExample",
     resources = glob(["src/main/resources/**"]),
