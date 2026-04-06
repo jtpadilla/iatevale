@@ -1,7 +1,7 @@
 package io.github.jtpadilla.product.simpleagent;
 
 import com.google.lf.a2a.v1.A2A;
-import io.github.jtpadilla.a2a.core.server.A2AServiceImpl;
+import io.github.jtpadilla.a2a.core.server.A2AService;
 import io.github.jtpadilla.a2a.core.server.http.WellKnownHandler;
 import io.helidon.service.registry.Service;
 import io.helidon.service.registry.Services;
@@ -18,10 +18,10 @@ public class Main {
     }
 
     final private WellKnownHandler wellKnownHandler;
-    final private A2AServiceImpl a2aService;
+    final private A2AService a2aService;
 
     @Service.Inject
-    public Main(WellKnownHandler wellKnownHandler, A2AServiceImpl a2aService) {
+    public Main(WellKnownHandler wellKnownHandler, A2AService a2aService) {
         this.wellKnownHandler = wellKnownHandler;
         this.a2aService = a2aService;
     }
