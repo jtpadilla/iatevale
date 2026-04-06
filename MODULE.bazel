@@ -88,6 +88,7 @@ maven.install(
         ## Helidon 4 (Service Registry)
         # config
         "io.helidon.config:helidon-config",
+        "io.helidon.config:helidon-config-yaml",
         # common
         "io.helidon.common:helidon-common",
         "io.helidon.common:helidon-common-types",

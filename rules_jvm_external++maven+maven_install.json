@@ -51,6 +51,7 @@
     "io.helidon.common:helidon-common": -2098459465,
     "io.helidon.common:helidon-common-types": -1736710837,
     "io.helidon.config:helidon-config": -1158053687,
+    "io.helidon.config:helidon-config-yaml": -999235465,
     "io.helidon.logging:helidon-logging-common": -1456416273,
     "io.helidon.logging:helidon-logging-jul": -268582805,
     "io.helidon.service:helidon-service-codegen": -545649811,
@@ -254,6 +255,7 @@
     "io.helidon.common:helidon-common-uri": 2143674068,
     "io.helidon.config:helidon-config": 1447464421,
     "io.helidon.config:helidon-config-metadata": -1086872033,
+    "io.helidon.config:helidon-config-yaml": -654154999,
     "io.helidon.grpc:helidon-grpc-core": -1210883265,
     "io.helidon.http.encoding:helidon-http-encoding": -1175704905,
     "io.helidon.http.media:helidon-http-media": 1166292097,
@@ -427,6 +429,7 @@
     "org.threeten:threetenbp": 1406815789,
     "org.wildfly.client:wildfly-client-config": 1940941757,
     "org.wildfly.common:wildfly-common": -883203819,
+    "org.yaml:snakeyaml": 1308413731,
     "tech.tablesaw:tablesaw-core": -1434090089,
     "tools.jackson.core:jackson-core": -396933876,
     "tools.jackson.core:jackson-databind": 308932881
@@ -468,6 +471,7 @@
     "io.helidon.common:helidon-common": "io.helidon.common:helidon-common:4.4.0",
     "io.helidon.common:helidon-common-types": "io.helidon.common:helidon-common-types:4.4.0",
     "io.helidon.config:helidon-config": "io.helidon.config:helidon-config:4.4.0",
+    "io.helidon.config:helidon-config-yaml": "io.helidon.config:helidon-config-yaml:4.4.0",
     "io.helidon.logging:helidon-logging-common": "io.helidon.logging:helidon-logging-common:4.4.0",
     "io.helidon.logging:helidon-logging-jul": "io.helidon.logging:helidon-logging-jul:4.4.0",
     "io.helidon.service:helidon-service-codegen": "io.helidon.service:helidon-service-codegen:4.4.0",
@@ -1397,6 +1401,12 @@
     "io.helidon.config:helidon-config-metadata": {
       "shasums": {
         "jar": "38549ad94d78ce9c6590bdb30d323ad4ff5881268a2e897eeadbd0ae0998c6ae"
+      },
+      "version": "4.4.0"
+    },
+    "io.helidon.config:helidon-config-yaml": {
+      "shasums": {
+        "jar": "2542eeb84178c09475fee8e5c5355db6c7fcab93c8c1ca2af5d831471e73a093"
       },
       "version": "4.4.0"
     },
@@ -2413,6 +2423,12 @@
       },
       "version": "1.6.0.Final"
     },
+    "org.yaml:snakeyaml": {
+      "shasums": {
+        "jar": "e6682acf1ace77508ef13649cbf4f8d09d2cf5457bdb61d25ffb6ac0233d78dd"
+      },
+      "version": "2.5"
+    },
     "tech.tablesaw:tablesaw-core": {
       "shasums": {
         "jar": "cceddee496b0d429a4ca15ad27dd338d9e1b7f4e3645d1552f8907a0f7525984"
@@ -3286,6 +3302,11 @@
       "io.helidon.common:helidon-common",
       "io.helidon.common:helidon-common-config",
       "io.helidon.common:helidon-common-media-type"
+    ],
+    "io.helidon.config:helidon-config-yaml": [
+      "io.helidon.common:helidon-common",
+      "io.helidon.config:helidon-config",
+      "org.yaml:snakeyaml"
     ],
     "io.helidon.grpc:helidon-grpc-core": [
       "com.google.protobuf:protobuf-java",
@@ -4983,6 +5004,9 @@
     "io.helidon.config:helidon-config-metadata": [
       "io.helidon.config.metadata"
     ],
+    "io.helidon.config:helidon-config-yaml": [
+      "io.helidon.config.yaml"
+    ],
     "io.helidon.grpc:helidon-grpc-core": [
       "io.helidon.grpc.core"
     ],
@@ -6582,6 +6606,30 @@
       "org.wildfly.common.string",
       "org.wildfly.common.xml"
     ],
+    "org.yaml:snakeyaml": [
+      "org.yaml.snakeyaml",
+      "org.yaml.snakeyaml.comments",
+      "org.yaml.snakeyaml.composer",
+      "org.yaml.snakeyaml.constructor",
+      "org.yaml.snakeyaml.emitter",
+      "org.yaml.snakeyaml.env",
+      "org.yaml.snakeyaml.error",
+      "org.yaml.snakeyaml.events",
+      "org.yaml.snakeyaml.extensions.compactnotation",
+      "org.yaml.snakeyaml.external.com.google.gdata.util.common.base",
+      "org.yaml.snakeyaml.inspector",
+      "org.yaml.snakeyaml.internal",
+      "org.yaml.snakeyaml.introspector",
+      "org.yaml.snakeyaml.nodes",
+      "org.yaml.snakeyaml.parser",
+      "org.yaml.snakeyaml.reader",
+      "org.yaml.snakeyaml.representer",
+      "org.yaml.snakeyaml.resolver",
+      "org.yaml.snakeyaml.scanner",
+      "org.yaml.snakeyaml.serializer",
+      "org.yaml.snakeyaml.tokens",
+      "org.yaml.snakeyaml.util"
+    ],
     "tech.tablesaw:tablesaw-core": [
       "tech.tablesaw.aggregate",
       "tech.tablesaw.analytic",
@@ -6828,6 +6876,7 @@
       "io.helidon.common:helidon-common-uri",
       "io.helidon.config:helidon-config",
       "io.helidon.config:helidon-config-metadata",
+      "io.helidon.config:helidon-config-yaml",
       "io.helidon.grpc:helidon-grpc-core",
       "io.helidon.http.encoding:helidon-http-encoding",
       "io.helidon.http.media:helidon-http-media",
@@ -7001,6 +7050,7 @@
       "org.threeten:threetenbp",
       "org.wildfly.client:wildfly-client-config",
       "org.wildfly.common:wildfly-common",
+      "org.yaml:snakeyaml",
       "tech.tablesaw:tablesaw-core",
       "tools.jackson.core:jackson-core",
       "tools.jackson.core:jackson-databind"
@@ -7203,6 +7253,11 @@
       ],
       "io.helidon.config.spi.ConfigParser": [
         "io.helidon.config.PropertiesConfigParser"
+      ]
+    },
+    "io.helidon.config:helidon-config-yaml": {
+      "io.helidon.config.spi.ConfigParser": [
+        "io.helidon.config.yaml.YamlConfigParser"
       ]
     },
     "io.helidon.logging:helidon-logging-common": {
