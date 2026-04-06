@@ -1,4 +1,4 @@
-package io.github.jtpadilla.util;
+package io.github.jtpadilla.util.misc;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;

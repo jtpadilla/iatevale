@@ -1,6 +1,6 @@
 package io.github.jtpadilla.util.test;
 
-import io.github.jtpadilla.util.BytesUtils;
+import io.github.jtpadilla.util.misc.BytesUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;

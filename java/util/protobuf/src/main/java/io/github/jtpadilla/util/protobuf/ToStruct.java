@@ -1,4 +1,4 @@
-package io.github.jtpadilla.protobuf;
+package io.github.jtpadilla.util.protobuf;
 
 import com.google.protobuf.Struct;
 

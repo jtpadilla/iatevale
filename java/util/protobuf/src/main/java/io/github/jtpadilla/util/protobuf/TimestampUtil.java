@@ -1,9 +1,9 @@
-package io.github.jtpadilla.protobuf;
+package io.github.jtpadilla.util.protobuf;
 
 import com.google.protobuf.Duration;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
-import io.github.jtpadilla.util.TimeUtil;
+import io.github.jtpadilla.util.misc.TimeUtil;
 
 import java.time.*;
 import java.util.ArrayList;

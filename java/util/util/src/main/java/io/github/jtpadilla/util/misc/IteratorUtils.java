@@ -1,4 +1,4 @@
-package io.github.jtpadilla.util;
+package io.github.jtpadilla.util.misc;
 
 import java.util.Iterator;
 import java.util.List;

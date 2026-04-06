@@ -1,4 +1,4 @@
-package io.github.jtpadilla.util;
+package io.github.jtpadilla.util.misc;
 
 import java.util.ArrayList;
 import java.util.List;
