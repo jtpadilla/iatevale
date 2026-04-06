@@ -1,0 +1,16 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+
+java_binary(
+    name = "getaiexample",
+    srcs = glob(["src/main/java/**/*.java"]),
+    main_class = "io.github.jtpadilla.product.genaiexample.GenaiExample",
+    resources = glob(["src/main/resources/**"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "//java/genai",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+    ],
+)

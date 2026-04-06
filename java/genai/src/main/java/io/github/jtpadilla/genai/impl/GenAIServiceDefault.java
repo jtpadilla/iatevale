@@ -1,18 +1,17 @@
 package io.github.jtpadilla.genai.impl;
 
 import com.google.genai.Client;
+import io.github.jtpadilla.genai.IGenAIService;
 import io.helidon.config.Config;
 
-public class GenAIServiceGemma3ApiKey {
+public class GenAIServiceDefault implements IGenAIService {
 
-    final static private String GEMMA_3_4B = "gemma-3-4b-it";
-    final static private String GEMMA_3_27B = "gemma-3-27b-it";
-    final static private String GEMMA_3_270M = "gemma-3-270m-it";
-    final static private String GEMMA_CURRENT = GEMMA_3_27B;
+
+    final static private String GEMINI_3_1_FLASH_LITE_PREVIEW = "gemini-3.1-flash-lite-preview";
 
     private final String apiKey;
 
-    public GenAIServiceGemma3ApiKey() {
+    public GenAIServiceDefault() {
         this.apiKey = Config.global().get("gemma.api-key").asString().orElseThrow(
             () -> new IllegalStateException("Configuration key 'gemma.api-key' is required")
         );
@@ -25,7 +24,7 @@ public class GenAIServiceGemma3ApiKey {
     }
 
     public String getLlmModel() {
-        return GEMMA_CURRENT;
+        return GEMINI_3_1_FLASH_LITE_PREVIEW;
     }
 
 }
