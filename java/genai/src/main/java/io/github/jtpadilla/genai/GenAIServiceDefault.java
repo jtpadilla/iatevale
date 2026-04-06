@@ -1,10 +1,9 @@
-package io.github.jtpadilla.genai.impl;
+package io.github.jtpadilla.genai;
 
 import com.google.genai.Client;
-import io.github.jtpadilla.genai.IGenAIService;
 import io.helidon.config.Config;
 
-public class GenAIServiceDefault implements IGenAIService {
+public class GenAIServiceDefault implements GenAIService {
 
 
     final static private String GEMINI_3_1_FLASH_LITE_PREVIEW = "gemini-3.1-flash-lite-preview";

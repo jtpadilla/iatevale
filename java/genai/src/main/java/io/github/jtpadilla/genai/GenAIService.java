@@ -2,9 +2,7 @@ package io.github.jtpadilla.genai;
 
 import com.google.genai.Client;
 
-import java.util.List;
-
-public interface IGenAIService {
+public interface GenAIService {
     Client createClient();
     String getLlmModel();
 }

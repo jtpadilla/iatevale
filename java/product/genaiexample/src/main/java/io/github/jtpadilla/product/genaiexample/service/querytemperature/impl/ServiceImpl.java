@@ -9,7 +9,7 @@ import io.github.jtpadilla.product.genaiexample.schema.CityListSchema;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureEntry;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryResult;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryService;
-import io.github.jtpadilla.genai.IGenAIService;
+import io.github.jtpadilla.genai.GenAIService;
 import io.github.jtpadilla.genai.agent.AgentException;
 import io.github.jtpadilla.genai.agent.AgentResources;
 
@@ -18,9 +18,9 @@ import java.util.List;
 
 public class ServiceImpl implements TemperatureQueryService {
 
-    private IGenAIService genAIService;
+    private GenAIService genAIService;
 
-    public ServiceImpl(IGenAIService genAIService) {
+    public ServiceImpl(GenAIService genAIService) {
         this.genAIService = genAIService;
     }
 

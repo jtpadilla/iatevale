@@ -4,8 +4,8 @@ import io.github.jtpadilla.product.genaiexample.service.querytemperature.Tempera
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryResult;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryService;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.impl.ServiceImpl;
-import io.github.jtpadilla.genai.IGenAIService;
-import io.github.jtpadilla.genai.impl.GenAIServiceDefault;
+import io.github.jtpadilla.genai.GenAIService;
+import io.github.jtpadilla.genai.GenAIServiceDefault;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class GenaiExample {
     public static void main(String[] args) {
 
         // Esto normalmente estaría solventado mediante inyección
-        final IGenAIService genAIService = new GenAIServiceDefault();
+        final GenAIService genAIService = new GenAIServiceDefault();
         final TemperatureQueryService service = new ServiceImpl(genAIService);
 
         // Usando el servicio...
