@@ -11,17 +11,17 @@ import io.helidon.webserver.grpc.GrpcRouting;
 import io.helidon.webserver.http.HttpRouting;
 
 @Service.Singleton
-public class Main {
+public class SimpleAgent {
 
     public static void main(String[] args) {
-        Services.get(Main.class).launch();
+        Services.get(SimpleAgent.class).launch();
     }
 
     final private WellKnownHandler wellKnownHandler;
     final private A2AService a2aService;
 
     @Service.Inject
-    public Main(WellKnownHandler wellKnownHandler, A2AService a2aService) {
+    public SimpleAgent(WellKnownHandler wellKnownHandler, A2AService a2aService) {
         this.wellKnownHandler = wellKnownHandler;
         this.a2aService = a2aService;
     }
