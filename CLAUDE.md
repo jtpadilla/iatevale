@@ -76,6 +76,77 @@ Para añadir un nuevo skill:
 
 Ver `//java/skill/echo` como implementación de referencia mínima.
 
+### Interacción desde línea de comando
+
+#### HTTP con curl
+
+```bash
+# Obtener la agent card pública
+curl http://localhost:8080/.well-known/agent.json
+
+# Obtener la agent card extendida (vía HTTP transcoding)
+curl http://localhost:8080/extendedAgentCard
+
+# Enviar un mensaje (sendMessage)
+curl -X POST http://localhost:8080/message:send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": {
+      "messageId": "msg-001",
+      "contextId": "ctx-001",
+      "role": "ROLE_USER",
+      "parts": [{"text": "Hola agente"}]
+    }
+  }'
+```
+
+#### gRPC con grpcurl
+
+```bash
+# Instalar grpcurl (si no está disponible)
+# https://github.com/fullstorydev/grpcurl
+
+# Listar servicios disponibles (requiere reflexión gRPC habilitada)
+grpcurl -plaintext localhost:8080 list
+
+# Listar métodos del servicio A2A
+grpcurl -plaintext localhost:8080 list lf.a2a.v1.A2AService
+
+# Obtener la agent card extendida
+grpcurl -plaintext -d '{}' localhost:8080 lf.a2a.v1.A2AService/GetExtendedAgentCard
+
+# Enviar un mensaje
+grpcurl -plaintext \
+  -d '{
+    "message": {
+      "messageId": "msg-001",
+      "contextId": "ctx-001",
+      "role": "ROLE_USER",
+      "parts": [{"text": "Hola agente"}]
+    }
+  }' \
+  localhost:8080 lf.a2a.v1.A2AService/SendMessage
+
+# Enviar un mensaje en modo streaming
+grpcurl -plaintext \
+  -d '{
+    "message": {
+      "messageId": "msg-002",
+      "contextId": "ctx-001",
+      "role": "ROLE_USER",
+      "parts": [{"text": "Hola streaming"}]
+    }
+  }' \
+  localhost:8080 lf.a2a.v1.A2AService/SendStreamingMessage
+
+# Consultar el estado de una tarea
+grpcurl -plaintext \
+  -d '{"id": "<task-id>"}' \
+  localhost:8080 lf.a2a.v1.A2AService/GetTask
+```
+
+> Si el servidor no tiene reflexión gRPC habilitada, hay que pasar el proto con `-proto proto/lf/a2a/v1/a2a.proto` y `-import-path .` a grpcurl.
+
 ### Paquete Proto
 
 El proto A2A está en `proto/lf/a2a/v1/a2a.proto`. Targets generados:
