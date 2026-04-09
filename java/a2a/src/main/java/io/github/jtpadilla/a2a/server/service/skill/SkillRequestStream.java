@@ -1,4 +1,4 @@
-package io.github.jtpadilla.a2a.core.service.skill;
+package io.github.jtpadilla.a2a.server.service.skill;
 
 import com.google.lf.a2a.v1.SendMessageRequest;
 import com.google.lf.a2a.v1.StreamResponse;

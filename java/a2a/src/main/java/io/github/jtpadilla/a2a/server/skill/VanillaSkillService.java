@@ -1,8 +1,8 @@
-package io.github.jtpadilla.a2a.core.vanilla.skill;
+package io.github.jtpadilla.a2a.server.skill;
 
 import com.google.lf.a2a.v1.AgentSkill;
-import io.github.jtpadilla.a2a.core.service.skill.SkillService;
-import io.github.jtpadilla.a2a.core.service.skill.spi.SkillProvider;
+import io.github.jtpadilla.a2a.server.service.skill.SkillService;
+import io.github.jtpadilla.a2a.server.service.skill.spi.SkillProvider;
 import io.helidon.service.registry.Service;
 
 import java.util.HashSet;

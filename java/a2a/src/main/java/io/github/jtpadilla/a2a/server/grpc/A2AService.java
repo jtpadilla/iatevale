@@ -1,10 +1,10 @@
-package io.github.jtpadilla.a2a.core.server.grpc;
+package io.github.jtpadilla.a2a.server.grpc;
 
 import com.google.lf.a2a.v1.*;
-import io.github.jtpadilla.a2a.core.server.grpc.impl.SkillContextImpl;
-import io.github.jtpadilla.a2a.core.server.grpc.impl.SkillDispatcher;
-import io.github.jtpadilla.a2a.core.service.agentcard.AgentCardService;
-import io.github.jtpadilla.a2a.core.service.skill.SkillService;
+import io.github.jtpadilla.a2a.server.grpc.impl.SkillContextImpl;
+import io.github.jtpadilla.a2a.server.grpc.impl.SkillDispatcher;
+import io.github.jtpadilla.a2a.server.service.agentcard.AgentCardService;
+import io.github.jtpadilla.a2a.server.service.skill.SkillService;
 import io.grpc.stub.StreamObserver;
 import io.helidon.service.registry.Service;
 

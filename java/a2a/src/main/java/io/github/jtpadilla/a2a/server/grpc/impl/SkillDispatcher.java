@@ -1,8 +1,8 @@
-package io.github.jtpadilla.a2a.core.server.grpc.impl;
+package io.github.jtpadilla.a2a.server.grpc.impl;
 
-import io.github.jtpadilla.a2a.core.service.skill.SkillContext;
-import io.github.jtpadilla.a2a.core.service.skill.SkillService;
-import io.github.jtpadilla.a2a.core.service.skill.spi.SkillProvider;
+import io.github.jtpadilla.a2a.server.service.skill.SkillContext;
+import io.github.jtpadilla.a2a.server.service.skill.SkillService;
+import io.github.jtpadilla.a2a.server.service.skill.spi.SkillProvider;
 
 public class SkillDispatcher {
 

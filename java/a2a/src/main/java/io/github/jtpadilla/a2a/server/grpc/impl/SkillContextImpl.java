@@ -1,12 +1,12 @@
-package io.github.jtpadilla.a2a.core.server.grpc.impl;
+package io.github.jtpadilla.a2a.server.grpc.impl;
 
 import com.google.lf.a2a.v1.SendMessageRequest;
 import com.google.lf.a2a.v1.SendMessageResponse;
 import com.google.lf.a2a.v1.StreamResponse;
-import io.github.jtpadilla.a2a.core.service.skill.SkillContext;
-import io.github.jtpadilla.a2a.core.service.skill.SkillRequest;
-import io.github.jtpadilla.a2a.core.service.skill.SkillRequestSimple;
-import io.github.jtpadilla.a2a.core.service.skill.SkillRequestStream;
+import io.github.jtpadilla.a2a.server.service.skill.SkillContext;
+import io.github.jtpadilla.a2a.server.service.skill.SkillRequest;
+import io.github.jtpadilla.a2a.server.service.skill.SkillRequestSimple;
+import io.github.jtpadilla.a2a.server.service.skill.SkillRequestStream;
 import io.grpc.stub.StreamObserver;
 
 public class SkillContextImpl implements SkillContext {
