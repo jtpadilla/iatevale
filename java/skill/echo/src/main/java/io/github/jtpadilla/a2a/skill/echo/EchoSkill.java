@@ -1,9 +1,9 @@
 package io.github.jtpadilla.a2a.skill.echo;
 
 import com.google.lf.a2a.v1.*;
-import io.github.jtpadilla.a2a.server.service.skill.SkillContext;
-import io.github.jtpadilla.a2a.server.service.skill.SkillRequestSimple;
-import io.github.jtpadilla.a2a.server.service.skill.SkillRequestStream;
+import io.github.jtpadilla.a2a.server.service.skill.spi.SkillContext;
+import io.github.jtpadilla.a2a.server.service.skill.spi.SkillRequestSimple;
+import io.github.jtpadilla.a2a.server.service.skill.spi.SkillRequestStream;
 import io.github.jtpadilla.a2a.server.service.skill.spi.SkillProvider;
 import io.grpc.stub.StreamObserver;
 import io.helidon.service.registry.Service;
