@@ -1,11 +1,11 @@
 package io.github.jtpadilla.product.genaiexample;
 
+import io.github.jtpadilla.genai.GenAIService;
+import io.github.jtpadilla.genai.GenAIServiceDefault;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryException;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryResult;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryService;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.impl.ServiceImpl;
-import io.github.jtpadilla.genai.GenAIService;
-import io.github.jtpadilla.genai.GenAIServiceDefault;
 
 import java.util.List;
 

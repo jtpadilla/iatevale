@@ -1,6 +1,9 @@
 package io.github.jtpadilla.product.genaiexample.service.querytemperature.impl;
 
 import com.google.genai.Client;
+import io.github.jtpadilla.genai.GenAIService;
+import io.github.jtpadilla.genai.agent.AgentException;
+import io.github.jtpadilla.genai.agent.AgentResources;
 import io.github.jtpadilla.product.genaiexample.agent.filteragent.FilterAgent;
 import io.github.jtpadilla.product.genaiexample.agent.querycitiesagent.QueryCitiesAgent;
 import io.github.jtpadilla.product.genaiexample.agent.querycitiesdataagent.QueryCitiesDataAgent;
@@ -9,9 +12,6 @@ import io.github.jtpadilla.product.genaiexample.schema.CityListSchema;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureEntry;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryResult;
 import io.github.jtpadilla.product.genaiexample.service.querytemperature.TemperatureQueryService;
-import io.github.jtpadilla.genai.GenAIService;
-import io.github.jtpadilla.genai.agent.AgentException;
-import io.github.jtpadilla.genai.agent.AgentResources;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,12 +3,12 @@ package io.github.jtpadilla.product.genaiexample.agent.querycitiesagent;
 import com.google.genai.errors.ApiException;
 import com.google.genai.errors.GenAiIOException;
 import com.google.genai.types.*;
-import io.github.jtpadilla.product.genaiexample.schema.CityListSchema;
 import io.github.jtpadilla.genai.agent.AgentException;
 import io.github.jtpadilla.genai.agent.AgentResources;
 import io.github.jtpadilla.genai.generate.GenerateContentException;
 import io.github.jtpadilla.genai.generate.GenerateContentWrapper;
 import io.github.jtpadilla.genai.schema.SchemaException;
+import io.github.jtpadilla.product.genaiexample.schema.CityListSchema;
 
 public class QueryCitiesAgent {
 

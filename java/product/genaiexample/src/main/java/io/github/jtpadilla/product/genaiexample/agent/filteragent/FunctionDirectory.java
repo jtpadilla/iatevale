@@ -2,9 +2,9 @@ package io.github.jtpadilla.product.genaiexample.agent.filteragent;
 
 import com.google.genai.types.FunctionCall;
 import com.google.genai.types.Tool;
+import io.github.jtpadilla.genai.function.FunctionGatewayException;
 import io.github.jtpadilla.product.genaiexample.function.currenttime.GetCurrentTimeFunction;
 import io.github.jtpadilla.product.genaiexample.function.filterlocations.FilterLocationsFunction;
-import io.github.jtpadilla.genai.function.FunctionGatewayException;
 
 import java.util.HashMap;
 import java.util.List;

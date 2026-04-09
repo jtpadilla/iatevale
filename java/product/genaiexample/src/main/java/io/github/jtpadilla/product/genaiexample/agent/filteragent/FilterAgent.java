@@ -3,7 +3,6 @@ package io.github.jtpadilla.product.genaiexample.agent.filteragent;
 import com.google.genai.errors.ApiException;
 import com.google.genai.errors.GenAiIOException;
 import com.google.genai.types.Content;
-import io.github.jtpadilla.product.genaiexample.schema.CityDataListSchema;
 import io.github.jtpadilla.genai.agent.AgentException;
 import io.github.jtpadilla.genai.agent.AgentResources;
 import io.github.jtpadilla.genai.function.FunctionGateway;
@@ -11,6 +10,7 @@ import io.github.jtpadilla.genai.function.FunctionGatewayException;
 import io.github.jtpadilla.genai.generate.PromptBuilder;
 import io.github.jtpadilla.genai.schema.SchemaEnabled;
 import io.github.jtpadilla.genai.schema.SchemaException;
+import io.github.jtpadilla.product.genaiexample.schema.CityDataListSchema;
 
 import java.util.List;
 
