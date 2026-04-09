@@ -1,4 +1,4 @@
-package io.github.jtpadilla.a2a.server.skill;
+package io.github.jtpadilla.a2a.server.impl.skill;
 
 import com.google.lf.a2a.v1.AgentSkill;
 import io.github.jtpadilla.a2a.server.service.skill.SkillService;
