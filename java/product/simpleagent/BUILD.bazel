@@ -8,8 +8,8 @@ java_binary(
     main_class = "io.github.jtpadilla.product.simpleagent.SimpleAgent",
     resources = glob(["src/main/resources/**"]),
     deps = [
-        "//java/a2a/server/base/grpc",
-        "//java/a2a/server/base/http",
+        "//java/a2a/server/base/server/grpc",
+        "//java/a2a/server/base/server/http",
         "//java/a2a/server/base/service/agentcard",
         "//java/a2a/server/base/service/skill",
         "//java/a2a/server/vanilla/service/skill",

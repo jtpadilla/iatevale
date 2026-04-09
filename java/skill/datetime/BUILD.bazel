@@ -6,7 +6,7 @@ java_library(
     name = "datetime",
     srcs = glob(["src/main/java/**/*.java"]),
     deps = [
-        "//java/a2a/server/base/service/skill",
+        "//java/a2a",
         "//java/third_party/helidon:service",
         "//proto/lf/a2a/v1:a2a_java_grpc",
         "//proto/lf/a2a/v1:a2a_java_proto",
