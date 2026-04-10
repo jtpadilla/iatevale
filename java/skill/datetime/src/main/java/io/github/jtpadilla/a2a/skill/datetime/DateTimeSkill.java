@@ -1,16 +1,14 @@
 package io.github.jtpadilla.a2a.skill.datetime;
 
 import com.google.lf.a2a.v1.*;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.SkillContext;
+import io.github.jtpadilla.a2a.server.base.service.skill.spi.A2AError;
+import io.github.jtpadilla.a2a.server.base.service.skill.spi.AgentEmitter;
+import io.github.jtpadilla.a2a.server.base.service.skill.spi.RequestContext;
 import io.github.jtpadilla.a2a.server.base.service.skill.spi.SkillProvider;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.SkillRequestSimple;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.SkillRequestStream;
-import io.grpc.stub.StreamObserver;
 import io.helidon.service.registry.Service;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service.Singleton
@@ -31,55 +29,30 @@ public class DateTimeSkill implements SkillProvider {
     }
 
     @Override
-    public void executeSkill(SkillContext context) {
-        switch (context.request()) {
-            case SkillRequestSimple simple -> sendMessage(simple.request(), simple.responseObserver());
-            case SkillRequestStream stream -> sendStreamingMessage(stream.request(), stream.responseObsever());
-        }
+    public void execute(RequestContext context, AgentEmitter agentEmitter) throws A2AError {
+
+        /*
+        Message responseMessage = Message.newBuilder()
+                .setMessageId(UUID.randomUUID().toString())
+                .setContextId(request.getMessage().getContextId())
+                .setRole(Role.ROLE_AGENT)
+                .addParts(Part.newBuilder().setText(currentDateTimeUtc()).build())
+                .build();
+
+            responseObserver.onNext(SendMessageResponse.newBuilder()
+                    .setMessage(responseMessage)
+                    .build());
+            responseObserver.onCompleted();
+
+         */
+    }
+
+    @Override
+    public void cancel(RequestContext context, AgentEmitter agentEmitter) throws A2AError {
     }
 
     private String currentDateTimeUtc() {
         return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
     }
 
-    private void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
-        LOGGER.info("Received sendMessage: " + request.getMessage().getMessageId());
-
-        Message responseMessage = Message.newBuilder()
-                .setMessageId(UUID.randomUUID().toString())
-                .setContextId(request.getMessage().getContextId())
-                .setRole(Role.ROLE_AGENT)
-                .addParts(Part.newBuilder().setText(currentDateTimeUtc()).build())
-                .build();
-
-        responseObserver.onNext(SendMessageResponse.newBuilder()
-                .setMessage(responseMessage)
-                .build());
-        responseObserver.onCompleted();
-    }
-
-    private void sendStreamingMessage(SendMessageRequest request, StreamObserver<StreamResponse> responseObserver) {
-        LOGGER.info("Received sendStreamingMessage: " + request.getMessage().getMessageId());
-
-        responseObserver.onNext(StreamResponse.newBuilder()
-                .setStatusUpdate(TaskStatusUpdateEvent.newBuilder()
-                        .setContextId(request.getMessage().getContextId())
-                        .setStatus(TaskStatus.newBuilder()
-                                .setState(TaskState.TASK_STATE_WORKING)
-                                .build())
-                        .build())
-                .build());
-
-        Message responseMessage = Message.newBuilder()
-                .setMessageId(UUID.randomUUID().toString())
-                .setContextId(request.getMessage().getContextId())
-                .setRole(Role.ROLE_AGENT)
-                .addParts(Part.newBuilder().setText(currentDateTimeUtc()).build())
-                .build();
-
-        responseObserver.onNext(StreamResponse.newBuilder()
-                .setMessage(responseMessage)
-                .build());
-        responseObserver.onCompleted();
-    }
 }

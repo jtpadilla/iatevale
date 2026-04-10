@@ -1,6 +1,7 @@
 package io.github.jtpadilla.a2a.server.base.lib.operations;
 
 import com.google.lf.a2a.v1.*;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import io.helidon.service.registry.Service;
 
@@ -13,14 +14,17 @@ public class Operations {
 
     public void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
         LOGGER.info("Operation sendMessage: " + request.getMessage().getMessageId());
+        responseObserver.onError(Status.UNIMPLEMENTED.asRuntimeException());
     }
 
     public void sendStreamingMessage(SendMessageRequest request, StreamObserver<StreamResponse> responseObserver) {
         LOGGER.info("Operation sendStreamingMessage: " + request.getMessage().getMessageId());
+        responseObserver.onError(Status.UNIMPLEMENTED.asRuntimeException());
     }
 
     public void getExtendedAgentCard(GetExtendedAgentCardRequest request, StreamObserver<AgentCard> responseObserver) {
-        LOGGER.info("Operation sendStreamingMessage");
+        LOGGER.info("Operation getExtendedAgentCard");
+        responseObserver.onError(Status.UNIMPLEMENTED.asRuntimeException());
     }
 
 }
