@@ -20,7 +20,7 @@ public class VanillaSkillService implements SkillService {
     @Service.Inject
     public VanillaSkillService(List<SkillProvider> providers) {
 
-        // Verificacion de que todas las skills tiene un id unico
+        // Verificación de que todas las skills tiene un ID unico
         Set<String> ids = new HashSet<>();
         for (SkillProvider provider : providers) {
             String id = provider.getSkillCard().getId();
