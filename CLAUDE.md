@@ -2,6 +2,31 @@
 
 Este fichero proporciona orientación a Claude Code (claude.ai/code) cuando trabaja con el código de este repositorio.
 
+
+## Esquema de la Base de Conocimientos
+
+### Qué es esto
+Una base de conocimientos personal sobre la migracion de una implementacion de a2a para java.
+* Especificacion: https://a2a-protocol.org/
+* Repositorio oficial general: https://github.com/a2aproject
+* Implementacion de referencia para java: https://github.com/a2aproject/a2a-java
+
+### Cómo está organizada
+* **raw/**: Contiene material original sin procesar. **Nunca** modifiques estos archivos.
+* **wiki/**: Contiene la wiki organizada. La IA mantiene esta sección por completo.
+* **outputs/**: Contiene informes generados, respuestas y análisis.
+
+### Reglas de la Wiki
+* Cada tema tiene su propio archivo `.md` en `wiki/`.
+* Cada archivo de la wiki comienza con un **resumen de un párrafo**.
+* Enlaza temas relacionados entre sí usando el formato `[[nombre-del-tema]]`.
+* Mantén un archivo `INDEX.md` en `wiki/` que enumere cada tema con una descripción de una línea.
+* Cuando se añadan nuevas fuentes en `raw/`, actualiza los artículos de la wiki correspondientes.
+
+### Mis Intereses
+* [Enumera de 3 a 5 temas en los que quieres que se centre esta base de conocimientos]
+
+
 ## Sistema de build
 
 El proyecto usa **Bazel 8.6.0** con Java 21. Todo pasa por Bazel — no hay Maven ni Gradle.

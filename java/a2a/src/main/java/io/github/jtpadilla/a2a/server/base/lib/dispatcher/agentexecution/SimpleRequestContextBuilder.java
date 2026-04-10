@@ -1,0 +1,35 @@
+package io.github.jtpadilla.a2a.server.base.lib.dispatcher.agentexecution;
+
+import io.a2a.server.tasks.TaskStore;
+import io.a2a.spec.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SimpleRequestContextBuilder extends RequestContext.Builder {
+    private final TaskStore taskStore;
+    private final boolean shouldPopulateReferredTasks;
+
+    public SimpleRequestContextBuilder(TaskStore taskStore, boolean shouldPopulateReferredTasks) {
+        this.taskStore = taskStore;
+        this.shouldPopulateReferredTasks = shouldPopulateReferredTasks;
+    }
+
+    @Override
+    public RequestContext build() {
+        List<Task> relatedTasks = null;
+        if (taskStore != null && shouldPopulateReferredTasks && getParams() != null
+                && getParams().message().referenceTaskIds() != null) {
+            relatedTasks = new ArrayList<>();
+            for (String taskId : getParams().message().referenceTaskIds()) {
+                Task task = taskStore.get(taskId);
+                if (task != null) {
+                    relatedTasks.add(task);
+                }
+            }
+        }
+
+        super.setRelatedTasks(relatedTasks);
+        return super.build();
+    }
+}
