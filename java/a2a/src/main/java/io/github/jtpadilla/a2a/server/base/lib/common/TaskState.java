@@ -34,8 +34,6 @@ package io.github.jtpadilla.a2a.server.base.lib.common;
  * important for event queue management and client polling logic. The {@link #isInterrupted()}
  * method identifies states where the task is paused awaiting external action.
  *
- * @see TaskStatus
- * @see Task
  * @see <a href="https://a2a-protocol.org/latest/">A2A Protocol Specification</a>
  */
 public enum TaskState {
