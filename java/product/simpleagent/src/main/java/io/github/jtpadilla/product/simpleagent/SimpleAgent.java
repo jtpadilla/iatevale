@@ -1,8 +1,8 @@
 package io.github.jtpadilla.product.simpleagent;
 
 import com.google.lf.a2a.v1.A2A;
-import io.github.jtpadilla.a2a.server.grpc.A2AService;
-import io.github.jtpadilla.a2a.server.http.WellKnownHandler;
+import io.github.jtpadilla.a2a.server.base.resource.grpc.A2AService;
+import io.github.jtpadilla.a2a.server.base.resource.http.WellKnownHandler;
 import io.helidon.service.registry.Service;
 import io.helidon.service.registry.Services;
 import io.helidon.webserver.WebServer;

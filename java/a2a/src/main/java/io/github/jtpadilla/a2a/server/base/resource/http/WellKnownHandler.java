@@ -1,8 +1,8 @@
-package io.github.jtpadilla.a2a.server.http;
+package io.github.jtpadilla.a2a.server.base.resource.http;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
-import io.github.jtpadilla.a2a.server.service.agentcard.AgentCardService;
+import io.github.jtpadilla.a2a.server.base.service.agentcard.AgentCardService;
 import io.helidon.service.registry.Service;
 import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.HttpService;
