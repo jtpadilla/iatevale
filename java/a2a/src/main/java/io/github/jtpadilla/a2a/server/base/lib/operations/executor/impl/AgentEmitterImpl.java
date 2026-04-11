@@ -5,13 +5,17 @@ import com.google.protobuf.Struct;
 import io.github.jtpadilla.a2a.server.base.lib.model.TaskStateUtil;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterEvent;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskArtifactUpdateEvent;
+import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskStatusUpdateEvent;
 import io.github.jtpadilla.a2a.server.base.lib.spec.A2AError;
 import io.github.jtpadilla.a2a.server.base.lib.spec.AgentEmitter;
+import io.github.jtpadilla.a2a.server.base.lib.spec.AgentEmitterException;
 import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
+import io.github.jtpadilla.util.protobuf.TimestampUtil;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -105,18 +109,25 @@ public class AgentEmitterImpl implements AgentEmitter {
         this.contextId = context.getContextId();
     }
 
-    private void updateStatus(TaskState taskState) {
-        updateStatus(taskState, null, TaskStateUtil.isTerminal(taskState));
+    private Optional<String> taskId() {
+        return Optional.ofNullable(taskId);
     }
 
-    /**
-     * Actualiza el estado de la tarea al estado indicado con un mensaje opcional.
-     *
-     * @param taskState el nuevo estado de la tarea
-     * @param message mensaje opcional a incluir con la actualización de estado
-     */
-    public void updateStatus(TaskState taskState, @Nullable Message message) {
-        updateStatus(taskState, message, TaskStateUtil.isTerminal(taskState));
+    private Optional<String> contextId() {
+        return Optional.ofNullable(contextId);
+    }
+
+    private String taskIdRequired() throws AgentEmitterException {
+        return taskId().orElseThrow(()->new AgentEmitterException("TaskId is missing"));
+    }
+
+    private String contextIdRequired() throws AgentEmitterException {
+        return contextId().orElseThrow(()->new AgentEmitterException("ContextId is missing"));
+    }
+
+
+    public void updateStatus(TaskState taskState) throws AgentEmitterException {
+        updateStatus(taskState, null);
     }
 
     /**
@@ -124,46 +135,47 @@ public class AgentEmitterImpl implements AgentEmitter {
      *
      * @param state el nuevo estado de la tarea
      * @param message mensaje opcional a incluir con la actualización de estado
-     * @param isFinal si este es un estado final (impide actualizaciones posteriores)
      */
-    private void updateStatus(TaskState state, @Nullable Message message, boolean isFinal) {
+    public void updateStatus(TaskState state, @Nullable Message message) throws AgentEmitterException {
+
+        final boolean isTerminal = TaskStateUtil.isTerminal(state);
+
         // Comprobar estado terminal primero (fallo rápido)
         if (terminalStateReached.get()) {
             throw new IllegalStateException("Cannot update task status - terminal state already reached");
         }
 
         // Para estados finales, establecer el indicador de forma atómica
-        if (isFinal) {
+        if (isTerminal) {
             if (!terminalStateReached.compareAndSet(false, true)) {
                 throw new IllegalStateException("Cannot update task status - terminal state already reached");
             }
         }
 
-        TaskStatusUpdateEvent event = TaskStatusUpdateEvent.builder()
-                .taskId(taskId)
-                .contextId(contextId)
-                .status(new TaskStatus(state, message, null))
+        // Se compone el mensaje dirigido al cliente
+        final TaskStatus.Builder taskStatus = TaskStatus.newBuilder()
+                .setState(state)
+                .setTimestamp(TimestampUtil.nowToTimestamp());
+        if (message != null) {
+            taskStatus.setMessage(message);
+        }
+        final TaskStatusUpdateEvent taskStatusUpdateEvent = TaskStatusUpdateEvent.newBuilder()
+                .setTaskId(taskIdRequired())
+                .setContextId(contextIdRequired())
+                .setStatus(taskStatus)
                 .build();
-        eventQueue.enqueueEvent(event);
+
+        // Se encola el evento
+        emitter.accept(new EmitterTaskStatusUpdateEvent(taskStatusUpdateEvent));
+
     }
 
-    /**
-     * Devuelve el ID de contexto de este emitter.
-     *
-     * @return el ID de contexto, o null si no está disponible
-     */
-    public @Nullable String getContextId() {
-        return this.contextId;
-    }
 
-    /**
-     * Devuelve el ID de tarea de este emitter.
-     *
-     * @return el ID de tarea, o null si no hay tarea asociada
-     */
-    public @Nullable String getTaskId() {
-        return this.taskId;
-    }
+
+
+
+
+
 
     /**
      * Añade un artefacto con las partes indicadas a la tarea.
@@ -226,6 +238,8 @@ public class AgentEmitterImpl implements AgentEmitter {
                 .build();
         emitter.accept(new EmitterTaskArtifactUpdateEvent(event));
     }
+
+
 
     /**
      * Marca la tarea como COMPLETED.

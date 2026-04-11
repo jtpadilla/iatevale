@@ -36,7 +36,7 @@ public interface AgentEmitter {
      * @param taskState el nuevo estado de la tarea
      * @param message mensaje opcional a incluir con la actualización de estado
      */
-    void updateStatus(TaskState taskState, @Nullable Message message);
+    void updateStatus(TaskState taskState, @Nullable Message message) throws AgentEmitterException;
 
     /**
      * Devuelve el ID de contexto de este emitter.
