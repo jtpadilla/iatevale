@@ -7,10 +7,9 @@ import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.Em
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskArtifactUpdateEvent;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskStatusUpdateEvent;
 import io.github.jtpadilla.a2a.server.base.lib.spec.A2AError;
-import io.github.jtpadilla.a2a.server.base.lib.spec.AgentEmitter;
-import io.github.jtpadilla.a2a.server.base.lib.spec.AgentEmitterException;
+import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
+import io.github.jtpadilla.a2a.server.base.lib.spec.EmitterException;
 import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
-import io.github.jtpadilla.util.protobuf.TimestampUtil;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -90,7 +89,7 @@ import java.util.function.Consumer;
  * Los eventos son validados por el EventQueue para garantizar la corrección del taskId.
  *
  */
-public class AgentEmitterImpl implements AgentEmitter {
+public class AgentEmitterImpl implements Emitter {
 
     private final Consumer<EmitterEvent> emitter;
     private final String taskId;
@@ -109,36 +108,118 @@ public class AgentEmitterImpl implements AgentEmitter {
         this.contextId = context.getContextId();
     }
 
-    private Optional<String> taskId() {
+    public Optional<String> taskId() {
         return Optional.ofNullable(taskId);
     }
 
-    private Optional<String> contextId() {
+    public Optional<String> contextId() {
         return Optional.ofNullable(contextId);
     }
 
-    private String taskIdRequired() throws AgentEmitterException {
-        return taskId().orElseThrow(()->new AgentEmitterException("TaskId is missing"));
+    private String taskIdRequired() throws EmitterException {
+        return taskId().orElseThrow(()->new EmitterException("TaskId is missing"));
     }
 
-    private String contextIdRequired() throws AgentEmitterException {
-        return contextId().orElseThrow(()->new AgentEmitterException("ContextId is missing"));
+    private String contextIdRequired() throws EmitterException {
+        return contextId().orElseThrow(()->new EmitterException("ContextId is missing"));
     }
 
 
-    public void updateStatus(TaskState taskState) throws AgentEmitterException {
-        updateStatus(taskState, null);
+    /////////////////////////////////////////////////////////////////////////////////
+    // Se envia un mensaje como respuesta sin crear una tarea
+    /////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public Message.Builder messageBuilder() {
+        return Message.newBuilder()
+                .setRole(Role.ROLE_AGENT)
+                .setMessageId(UUID.randomUUID().toString());
+    }
+
+    public void messageSend(Message message) throws EmitterException {
+
     }
 
     /**
-     * Actualiza el estado de la tarea al estado indicado con un mensaje opcional e indicador de finalidad.
+     * Envía un mensaje de texto simple al cliente.
+     * Método de conveniencia para agentes que responden con texto plano sin crear una tarea.
      *
-     * @param state el nuevo estado de la tarea
-     * @param message mensaje opcional a incluir con la actualización de estado
+     * @param text el contenido de texto a enviar
      */
-    public void updateStatus(TaskState state, @Nullable Message message) throws AgentEmitterException {
+    public void sendMessage(String text) {
+        sendMessage(List.of(new TextPart(text)));
+    }
 
-        final boolean isTerminal = TaskStateUtil.isTerminal(state);
+    /**
+     * Envía un mensaje con partes personalizadas (texto, imágenes, etc.) al cliente.
+     * Úsalo para respuestas enriquecidas que no requieren gestión del ciclo de vida de la tarea.
+     *
+     * @param parts las partes del mensaje a enviar
+     */
+    public void sendMessage(List<Part> parts) {
+        sendMessage(parts, null);
+    }
+
+    /**
+     * Envía un mensaje con partes y metadatos al cliente.
+     * Crea un mensaje de agente con los IDs de tarea y contexto actuales (si están disponibles)
+     * y lo encola en la cola de eventos.
+     *
+     * @param parts las partes del mensaje a enviar
+     * @param metadata metadatos opcionales a adjuntar al mensaje
+     */
+    public void sendMessage(List<Part> parts, @Nullable Map<String, Object> metadata) {
+        Message message = newAgentMessage(parts, metadata);
+        eventQueue.enqueueEvent(message);
+    }
+
+    /**
+     * Envía un objeto Message existente directamente al cliente.
+     * <p>
+     * Úsalo cuando necesites reenviar o hacer eco de un mensaje existente sin crear uno nuevo.
+     * El mensaje se encola tal cual, preservando su messageId, metadatos y todos los demás campos.
+     * </p>
+     * <p>
+     * <b>Nota:</b> Se usa típicamente para reenviar mensajes de usuario o preservar propiedades
+     * específicas del mensaje. En la mayoría de los casos, prefiere {@link #sendMessage(String)} o
+     * {@link #sendMessage(List)}, que crean nuevos mensajes de agente con IDs generados.
+     * </p>
+     * <p>Ejemplo de uso:
+     * <pre>{@code
+     * public void execute(RequestContext context, AgentEmitter emitter) {
+     *     // Devuelve el mensaje del usuario como eco
+     *     emitter.sendMessage(context.getMessage());
+     * }
+     * }</pre>
+     *
+     * @param message el mensaje a enviar al cliente
+     * @since 1.0.0
+     */
+    public void sendMessage(Message message) {
+        eventQueue.enqueueEvent(message);
+    }
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // Se le envia al cliente la actualizacion del estado de una tarea
+    // ya existente
+    /////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void taskStatusUpdate(TaskStatus taskStatus) throws EmitterException {
+        taskStatusUpdateImpl(taskStatus, null);
+    }
+
+    @Override
+    public void taskStatusUpdate(TaskStatus taskStatus, Struct metadata) throws EmitterException {
+        taskStatusUpdateImpl(taskStatus, metadata);
+    }
+
+    private void taskStatusUpdateImpl(TaskStatus taskStatus, @Nullable Struct metadata) throws EmitterException {
+
+        final boolean isTerminal = TaskStateUtil.isTerminal(taskStatus.getState());
 
         // Comprobar estado terminal primero (fallo rápido)
         if (terminalStateReached.get()) {
@@ -153,91 +234,63 @@ public class AgentEmitterImpl implements AgentEmitter {
         }
 
         // Se compone el mensaje dirigido al cliente
-        final TaskStatus.Builder taskStatus = TaskStatus.newBuilder()
-                .setState(state)
-                .setTimestamp(TimestampUtil.nowToTimestamp());
-        if (message != null) {
-            taskStatus.setMessage(message);
-        }
-        final TaskStatusUpdateEvent taskStatusUpdateEvent = TaskStatusUpdateEvent.newBuilder()
+        final TaskStatusUpdateEvent.Builder taskStatusUpdateEvent = TaskStatusUpdateEvent.newBuilder()
                 .setTaskId(taskIdRequired())
                 .setContextId(contextIdRequired())
-                .setStatus(taskStatus)
-                .build();
+                .setStatus(taskStatus);
+        if (metadata != null) {
+            taskStatusUpdateEvent.setMetadata(metadata);
+        }
 
         // Se encola el evento
-        emitter.accept(new EmitterTaskStatusUpdateEvent(taskStatusUpdateEvent));
+        emitter.accept(new EmitterTaskStatusUpdateEvent(taskStatusUpdateEvent.build()));
 
     }
 
+    /////////////////////////////////////////////////////////////////////////////////
+    // Se le envia al cliente el delta de un Artifact que se ha generado en una tarea
+    // ya existente (puede ser un artifact completo).
+    /////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-    /**
-     * Añade un artefacto con las partes indicadas a la tarea.
-     *
-     * @param parts las partes a incluir en el artefacto
-     */
-    public void addArtifact(List<Part> parts) {
-        addArtifact(parts, null, null, null);
+    @Override
+    public void taskArtifactUpdate(Artifact artifact) throws EmitterException {
+        taskArtifactUpdateImpl(artifact, false, true, null);
     }
 
-    /**
-     * Añade un artefacto con las partes, ID de artefacto, nombre y metadatos indicados.
-     *
-     * @param parts las partes a incluir en el artefacto
-     * @param artifactId ID de artefacto opcional (se genera si es null)
-     * @param name nombre opcional del artefacto
-     * @param metadata mapa de metadatos opcional
-     */
-    public void addArtifact(
-            List<Part> parts,
-            @Nullable String artifactId,
-            @Nullable String name,
-            @Nullable Map<String, Object> metadata) {
-        addArtifact(parts, artifactId, name, metadata, null, null);
+    @Override
+    public void taskArtifactUpdate(Artifact artifact, Struct metadata) throws EmitterException {
+        taskArtifactUpdateImpl(artifact, false, true, metadata);
     }
 
-    /**
-     * Añade un artefacto con todos los parámetros opcionales.
-     *
-     * @param parts las partes a incluir en el artefacto
-     * @param artifactId ID de artefacto opcional (se genera si es null)
-     * @param name nombre opcional del artefacto
-     * @param metadata mapa de metadatos opcional
-     * @param append si se debe añadir al final de un artefacto existente
-     * @param lastChunk si este es el último fragmento de una secuencia en streaming
-     */
-    public void addArtifact(
-            List<Part> parts,
-            @Nullable String artifactId,
-            @Nullable String name,
-            @Nullable Struct metadata,
-            @Nullable Boolean append,
-            @Nullable Boolean lastChunk) {
-        if (artifactId == null) {
-            artifactId = UUID.randomUUID().toString();
-        }
-        TaskArtifactUpdateEvent event = TaskArtifactUpdateEvent.newBuilder()
-                .setTaskId(taskId)
-                .setContextId(contextId)
-                .setArtifact(
-                        Artifact.newBuilder()
-                                .setArtifactId(artifactId)
-                                .setName(name)
-                                .addAllParts(parts)
-                                .setMetadata(metadata)
-                                .build()
-                )
+    @Override
+    public void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk) throws EmitterException {
+        taskArtifactUpdateImpl(artifact, append, lastChunk, null);
+    }
+
+    @Override
+    public void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk, Struct metadata) throws EmitterException {
+        taskArtifactUpdateImpl(artifact, append, lastChunk, metadata);
+    }
+
+    private void taskArtifactUpdateImpl(Artifact artifact, boolean append, boolean lastChunk, @Nullable Struct metadata) throws EmitterException {
+
+        // Se compone el mensaje dirigido al cliente
+        final TaskArtifactUpdateEvent.Builder taskArtifactUpdateEvent = TaskArtifactUpdateEvent.newBuilder()
+                .setTaskId(taskIdRequired())
+                .setContextId(contextIdRequired())
+                .setArtifact(artifact)
                 .setAppend(append)
-                .setLastChunk(lastChunk)
-                .build();
-        emitter.accept(new EmitterTaskArtifactUpdateEvent(event));
+                .setLastChunk(lastChunk);
+        if (metadata != null) {
+            taskArtifactUpdateEvent.setMetadata(metadata);
+        }
+
+        // Se encola el evento
+        emitter.accept(new EmitterTaskArtifactUpdateEvent(taskArtifactUpdateEvent.build()));
+
     }
+
+
 
 
 
@@ -472,65 +525,6 @@ public class AgentEmitterImpl implements AgentEmitter {
     }
 
     /**
-     * Envía un mensaje de texto simple al cliente.
-     * Método de conveniencia para agentes que responden con texto plano sin crear una tarea.
-     *
-     * @param text el contenido de texto a enviar
-     */
-    public void sendMessage(String text) {
-        sendMessage(List.of(new TextPart(text)));
-    }
-
-    /**
-     * Envía un mensaje con partes personalizadas (texto, imágenes, etc.) al cliente.
-     * Úsalo para respuestas enriquecidas que no requieren gestión del ciclo de vida de la tarea.
-     *
-     * @param parts las partes del mensaje a enviar
-     */
-    public void sendMessage(List<Part> parts) {
-        sendMessage(parts, null);
-    }
-
-    /**
-     * Envía un mensaje con partes y metadatos al cliente.
-     * Crea un mensaje de agente con los IDs de tarea y contexto actuales (si están disponibles)
-     * y lo encola en la cola de eventos.
-     *
-     * @param parts las partes del mensaje a enviar
-     * @param metadata metadatos opcionales a adjuntar al mensaje
-     */
-    public void sendMessage(List<Part> parts, @Nullable Map<String, Object> metadata) {
-        Message message = newAgentMessage(parts, metadata);
-        eventQueue.enqueueEvent(message);
-    }
-
-    /**
-     * Envía un objeto Message existente directamente al cliente.
-     * <p>
-     * Úsalo cuando necesites reenviar o hacer eco de un mensaje existente sin crear uno nuevo.
-     * El mensaje se encola tal cual, preservando su messageId, metadatos y todos los demás campos.
-     * </p>
-     * <p>
-     * <b>Nota:</b> Se usa típicamente para reenviar mensajes de usuario o preservar propiedades
-     * específicas del mensaje. En la mayoría de los casos, prefiere {@link #sendMessage(String)} o
-     * {@link #sendMessage(List)}, que crean nuevos mensajes de agente con IDs generados.
-     * </p>
-     * <p>Ejemplo de uso:
-     * <pre>{@code
-     * public void execute(RequestContext context, AgentEmitter emitter) {
-     *     // Devuelve el mensaje del usuario como eco
-     *     emitter.sendMessage(context.getMessage());
-     * }
-     * }</pre>
-     *
-     * @param message el mensaje a enviar al cliente
-     * @since 1.0.0
-     */
-    public void sendMessage(Message message) {
-        eventQueue.enqueueEvent(message);
-    }
-
-    /**
      * Añade un objeto Task personalizado para enviarlo al cliente.
      * <p>
      * Úsalo cuando necesites crear una Task con campos específicos (historial, artefactos, etc.)
@@ -602,7 +596,7 @@ public class AgentEmitterImpl implements AgentEmitter {
      *
      * @return un Message.Builder con los campos comunes del agente ya establecidos
      */
-    public Message.Builder messageBuilder() {
+    public Message.Builder messageBuilderXXX() {
         Message.Builder builder = Message.builder()
                 .contextId(contextId)
                 .role(Message.Role.ROLE_AGENT)

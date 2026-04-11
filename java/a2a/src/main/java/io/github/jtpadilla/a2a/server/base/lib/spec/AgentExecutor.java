@@ -14,8 +14,8 @@ package io.github.jtpadilla.a2a.server.base.lib.spec;
  * asynchronously in a background thread pool when requests arrive from transport layers.
  * Your implementation should:
  * <ul>
- *   <li>Use the {@link AgentEmitter} to send messages, update task status, and stream artifacts</li>
- *   <li>Handle cancellation via the {@link #cancel(RequestContext, AgentEmitter)} method</li>
+ *   <li>Use the {@link Emitter} to send messages, update task status, and stream artifacts</li>
+ *   <li>Handle cancellation via the {@link #cancel(RequestContext, Emitter)} method</li>
  *   <li>Be thread-safe if maintaining state across invocations</li>
  * </ul>
  *
@@ -108,7 +108,7 @@ public interface AgentExecutor {
      * @param emitter the agent emitter for sending messages, updating status, and streaming artifacts
      * @throws A2AError if execution fails catastrophically (exception propagates to client)
      */
-    void execute(RequestContext context, AgentEmitter emitter) throws A2AError;
+    void execute(RequestContext context, Emitter emitter) throws A2AError;
 
     /**
      * Cancels an ongoing agent execution.
@@ -121,7 +121,7 @@ public interface AgentExecutor {
      *   <li>Clean up resources (close connections, release locks)</li>
      * </ul>
      * <p>
-     * <b>Note:</b> The {@link #execute(RequestContext, AgentEmitter)} method may still be
+     * <b>Note:</b> The {@link #execute(RequestContext, Emitter)} method may still be
      * running on another thread. Use appropriate synchronization or interruption mechanisms
      * if your agent maintains cancellable state.
      * <p>
@@ -139,5 +139,5 @@ public interface AgentExecutor {
      * @throws io.a2a.spec.TaskNotCancelableError if this agent does not support cancellation
      * @throws A2AError if cancellation is supported but failed to execute
      */
-    void cancel(RequestContext context, AgentEmitter emitter) throws A2AError;
+    void cancel(RequestContext context, Emitter emitter) throws A2AError;
 }

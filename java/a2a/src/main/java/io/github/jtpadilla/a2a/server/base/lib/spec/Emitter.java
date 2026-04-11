@@ -1,10 +1,12 @@
 package io.github.jtpadilla.a2a.server.base.lib.spec;
 
 import com.google.lf.a2a.v1.*;
+import com.google.protobuf.Struct;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Auxiliar para emitir eventos desde implementaciones de AgentExecutor.
@@ -28,7 +30,7 @@ import java.util.Map;
  * @see RequestContext
  * @since 1.0.0
  */
-public interface AgentEmitter {
+public interface Emitter {
 
     /**
      * Actualiza el estado de la tarea al estado indicado con un mensaje opcional.
@@ -36,51 +38,38 @@ public interface AgentEmitter {
      * @param taskState el nuevo estado de la tarea
      * @param message mensaje opcional a incluir con la actualización de estado
      */
-    void updateStatus(TaskState taskState, @Nullable Message message) throws AgentEmitterException;
+    void updateStatus(TaskState taskState, @Nullable Message message) throws EmitterException;
 
     /**
      * Devuelve el ID de contexto de este emitter.
      *
      * @return el ID de contexto, o null si no está disponible
      */
-    @Nullable String getContextId();
+    Optional<String> contextId();
 
     /**
      * Devuelve el ID de tarea de este emitter.
      *
      * @return el ID de tarea, o null si no hay tarea asociada
      */
-    @Nullable String getTaskId();
+    Optional<String> taskId();
 
-    /**
-     * Añade un artefacto con las partes indicadas a la tarea.
-     *
-     * @param parts las partes a incluir en el artefacto
-     */
-    void addArtifact(List<Part> parts);
+    // Enviar mensajes si tener una tarea creada
+    Message.Builder messageBuilder();
 
-    /**
-     * Añade un artefacto con las partes, ID de artefacto, nombre y metadatos indicados.
-     *
-     * @param parts las partes a incluir en el artefacto
-     * @param artifactId ID de artefacto opcional (se genera si es null)
-     * @param name nombre opcional del artefacto
-     * @param metadata mapa de metadatos opcional
-     */
-    void addArtifact(List<Part> parts, @Nullable String artifactId, @Nullable String name, @Nullable Map<String, Object> metadata);
+    // Actualizar el estado de la tarea
+    void taskStatusUpdate(TaskStatus taskStatus) throws EmitterException;
+    void taskStatusUpdate(TaskStatus taskStatus, Struct metadata) throws EmitterException;
 
-    /**
-     * Añade un artefacto con todos los parámetros opcionales.
-     *
-     * @param parts las partes a incluir en el artefacto
-     * @param artifactId ID de artefacto opcional (se genera si es null)
-     * @param name nombre opcional del artefacto
-     * @param metadata mapa de metadatos opcional
-     * @param append si se debe añadir al final de un artefacto existente
-     * @param lastChunk si este es el último fragmento de una secuencia en streaming
-     */
-    void addArtifact(List<Part> parts, @Nullable String artifactId, @Nullable String name, @Nullable Map<String, Object> metadata,
-                     @Nullable Boolean append, @Nullable Boolean lastChunk);
+    // Actualizar el artefacto de la tarea
+    void taskArtifactUpdate(Artifact artifact) throws EmitterException;
+    void taskArtifactUpdate(Artifact artifact, Struct metadata) throws EmitterException;
+    void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk) throws EmitterException;
+    void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk, Struct metadata) throws EmitterException;
+
+
+
+
 
     /**
      * Marca la tarea como COMPLETED.
@@ -275,6 +264,6 @@ public interface AgentEmitter {
      *
      * @return un Message.Builder con los campos comunes del agente ya establecidos
      */
-    Message.Builder messageBuilder();
+    Message.Builder messageBuilderXXX();
 
 }
