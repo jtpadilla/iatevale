@@ -1,8 +1,10 @@
 package io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl;
 
 import com.google.lf.a2a.v1.*;
+import com.google.protobuf.Struct;
 import io.github.jtpadilla.a2a.server.base.lib.model.TaskStateUtil;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterEvent;
+import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskArtifactUpdateEvent;
 import io.github.jtpadilla.a2a.server.base.lib.spec.A2AError;
 import io.github.jtpadilla.a2a.server.base.lib.spec.AgentEmitter;
 import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
@@ -180,7 +182,11 @@ public class AgentEmitterImpl implements AgentEmitter {
      * @param name nombre opcional del artefacto
      * @param metadata mapa de metadatos opcional
      */
-    public void addArtifact(List<Part> parts, @Nullable String artifactId, @Nullable String name, @Nullable Map<String, Object> metadata) {
+    public void addArtifact(
+            List<Part> parts,
+            @Nullable String artifactId,
+            @Nullable String name,
+            @Nullable Map<String, Object> metadata) {
         addArtifact(parts, artifactId, name, metadata, null, null);
     }
 
@@ -194,8 +200,13 @@ public class AgentEmitterImpl implements AgentEmitter {
      * @param append si se debe añadir al final de un artefacto existente
      * @param lastChunk si este es el último fragmento de una secuencia en streaming
      */
-    public void addArtifact(List<Part> parts, @Nullable String artifactId, @Nullable String name, @Nullable Map<String, Object> metadata,
-                            @Nullable Boolean append, @Nullable Boolean lastChunk) {
+    public void addArtifact(
+            List<Part> parts,
+            @Nullable String artifactId,
+            @Nullable String name,
+            @Nullable Struct metadata,
+            @Nullable Boolean append,
+            @Nullable Boolean lastChunk) {
         if (artifactId == null) {
             artifactId = UUID.randomUUID().toString();
         }
@@ -207,13 +218,13 @@ public class AgentEmitterImpl implements AgentEmitter {
                                 .setArtifactId(artifactId)
                                 .setName(name)
                                 .addAllParts(parts)
-                                .metadata(metadata)
+                                .setMetadata(metadata)
                                 .build()
                 )
-                .append(append)
-                .lastChunk(lastChunk)
+                .setAppend(append)
+                .setLastChunk(lastChunk)
                 .build();
-        eventQueue.enqueueEvent(event);
+        emitter.accept(new EmitterTaskArtifactUpdateEvent(event));
     }
 
     /**
