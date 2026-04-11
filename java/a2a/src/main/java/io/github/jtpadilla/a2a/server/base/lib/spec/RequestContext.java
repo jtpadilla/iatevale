@@ -1,4 +1,4 @@
-package io.github.jtpadilla.a2a.server.base.service.skill.spi;
+package io.github.jtpadilla.a2a.server.base.lib.spec;
 
 import com.google.lf.a2a.v1.SendMessageRequest;
 import com.google.lf.a2a.v1.Task;

@@ -3,24 +3,16 @@ package io.github.jtpadilla.product.simpleagent.agentcard;
 import com.google.lf.a2a.v1.AgentCapabilities;
 import com.google.lf.a2a.v1.AgentCard;
 import com.google.lf.a2a.v1.AgentInterface;
-import com.google.lf.a2a.v1.AgentSkill;
 import io.github.jtpadilla.a2a.server.base.service.agentcard.AgentCardService;
-import io.github.jtpadilla.a2a.server.base.service.skill.SkillService;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.SkillProvider;
 import io.helidon.service.registry.Service;
-
-import java.util.List;
 
 @Service.Singleton
 public class SimpleAgentCard implements AgentCardService {
 
     final private AgentCard agentCard;
 
-    public SimpleAgentCard(SkillService skillService) {
-        final List<AgentSkill> agentSkills = skillService.skillList().stream()
-                .map(SkillProvider::getSkillCard)
-                .toList();
-        this.agentCard = agentCardBuilder().addAllSkills(agentSkills).build();
+    public SimpleAgentCard() {
+        this.agentCard = agentCardBuilder().build();
     }
 
     @Override

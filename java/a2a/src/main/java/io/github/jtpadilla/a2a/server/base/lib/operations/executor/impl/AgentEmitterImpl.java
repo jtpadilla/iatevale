@@ -1,15 +1,18 @@
-package io.github.jtpadilla.a2a.server.base.lib.operations;
+package io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl;
 
 import com.google.lf.a2a.v1.*;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.A2AError;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.AgentEmitter;
-import io.github.jtpadilla.a2a.server.base.service.skill.spi.RequestContext;
+import io.github.jtpadilla.a2a.server.base.lib.model.TaskStateUtil;
+import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterEvent;
+import io.github.jtpadilla.a2a.server.base.lib.spec.A2AError;
+import io.github.jtpadilla.a2a.server.base.lib.spec.AgentEmitter;
+import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 /**
  * Auxiliar para emitir eventos desde implementaciones de AgentExecutor.
@@ -27,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *       {@link #sendMessage(List, Map)}</li>
  *   <li><b>Streaming de artefactos:</b> {@link #addArtifact(List)}, {@link #addArtifact(List, String, String, Map)}</li>
  *   <li><b>Requisitos de auth/entrada:</b> {@link #requiresAuth()}, {@link #requiresInput()}</li>
- *   <li><b>Eventos personalizados:</b> {@link #taskBuilder()}, {@link #messageBuilder()}, {@link #addTask(Task)}, {@link #emitEvent(Event)}</li>
+ *   <li><b>Eventos personalizados:</b> {@link #taskBuilder()}, {@link #messageBuilder()}, {@link #addTask(Task)}</li>
  * </ul>
  *
  * <h2>Patrones de uso</h2>
@@ -80,13 +83,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * Los eventos son validados por el EventQueue para garantizar la corrección del taskId.
  *
- * @see io.a2a.server.agentexecution.AgentExecutor
- * @see RequestContext
- * @see EventQueue
- * @since 1.0.0
  */
 public class AgentEmitterImpl implements AgentEmitter {
-    private final EventQueue eventQueue;
+
+    private final Consumer<EmitterEvent> emitter;
     private final String taskId;
     private final String contextId;
     private final AtomicBoolean terminalStateReached = new AtomicBoolean(false);
@@ -95,16 +95,16 @@ public class AgentEmitterImpl implements AgentEmitter {
      * Crea un nuevo AgentEmitter para el contexto de solicitud y la cola de eventos dados.
      *
      * @param context el contexto de solicitud que contiene los IDs de tarea y contexto
-     * @param eventQueue la cola de eventos para encolar eventos
+     * @param emitter mecanismo para enviar eventos
      */
-    public AgentEmitterImpl(RequestContext context, EventQueue eventQueue) {
-        this.eventQueue = eventQueue;
+    public AgentEmitterImpl(RequestContext context, Consumer<EmitterEvent> emitter) {
+        this.emitter = emitter;
         this.taskId = context.getTaskId();
         this.contextId = context.getContextId();
     }
 
     private void updateStatus(TaskState taskState) {
-        updateStatus(taskState, null, taskState.isFinal());
+        updateStatus(taskState, null, TaskStateUtil.isTerminal(taskState));
     }
 
     /**
@@ -114,7 +114,7 @@ public class AgentEmitterImpl implements AgentEmitter {
      * @param message mensaje opcional a incluir con la actualización de estado
      */
     public void updateStatus(TaskState taskState, @Nullable Message message) {
-        updateStatus(taskState, message, taskState.isFinal());
+        updateStatus(taskState, message, TaskStateUtil.isTerminal(taskState));
     }
 
     /**
@@ -168,7 +168,7 @@ public class AgentEmitterImpl implements AgentEmitter {
      *
      * @param parts las partes a incluir en el artefacto
      */
-    public void addArtifact(List<Part<?>> parts) {
+    public void addArtifact(List<Part> parts) {
         addArtifact(parts, null, null, null);
     }
 
@@ -435,7 +435,7 @@ public class AgentEmitterImpl implements AgentEmitter {
      * @param metadata metadatos opcionales a adjuntar al mensaje
      * @return un nuevo objeto Message listo para enviar
      */
-    public Message newAgentMessage(List<Part<?>> parts, @Nullable Map<String, Object> metadata) {
+    public Message newAgentMessage(List<Part> parts, @Nullable Map<String, Object> metadata) {
         return Message.builder()
                 .role(Message.Role.ROLE_AGENT)
                 .taskId(taskId)
@@ -462,7 +462,7 @@ public class AgentEmitterImpl implements AgentEmitter {
      *
      * @param parts las partes del mensaje a enviar
      */
-    public void sendMessage(List<Part<?>> parts) {
+    public void sendMessage(List<Part> parts) {
         sendMessage(parts, null);
     }
 
@@ -474,7 +474,7 @@ public class AgentEmitterImpl implements AgentEmitter {
      * @param parts las partes del mensaje a enviar
      * @param metadata metadatos opcionales a adjuntar al mensaje
      */
-    public void sendMessage(List<Part<?>> parts, @Nullable Map<String, Object> metadata) {
+    public void sendMessage(List<Part> parts, @Nullable Map<String, Object> metadata) {
         Message message = newAgentMessage(parts, metadata);
         eventQueue.enqueueEvent(message);
     }
@@ -535,35 +535,6 @@ public class AgentEmitterImpl implements AgentEmitter {
         eventQueue.enqueueEvent(task);
     }
 
-    /**
-     * Emite un objeto Event personalizado al cliente.
-     * <p>
-     * Es un método de propósito general para emitir cualquier tipo de Event. La mayoría de los
-     * agentes deberían usar los métodos de conveniencia ({@link #sendMessage(String)},
-     * {@link #addTask(Task)}, {@link #addArtifact(List)}, {@link #complete()}, etc.), pero este
-     * método ofrece flexibilidad para agentes que necesitan crear y emitir eventos personalizados
-     * usando los builders de eventos.
-     * </p>
-     * <p>Ejemplo de uso:
-     * <pre>{@code
-     * public void execute(RequestContext context, AgentEmitter emitter) {
-     *     // Crear un TaskStatusUpdateEvent personalizado
-     *     TaskStatusUpdateEvent event = TaskStatusUpdateEvent.builder()
-     *         .taskId(context.getTaskId())
-     *         .contextId(context.getContextId())
-     *         .status(new TaskStatus(TaskState.WORKING))
-     *         .isFinal(false)
-     *         .build();
-     *     emitter.emitEvent(event);
-     * }
-     * }</pre>
-     *
-     * @param event el evento a emitir
-     * @since 1.0.0
-     */
-    public void emitEvent(Event event) {
-        eventQueue.enqueueEvent(event);
-    }
 
     /**
      * Crea un Task.Builder pre-poblado con los IDs de tarea y contexto correctos.

@@ -1,4 +1,4 @@
-package io.github.jtpadilla.a2a.server.base.service.skill.spi;
+package io.github.jtpadilla.a2a.server.base.lib.spec;
 
 import com.google.lf.a2a.v1.*;
 import org.jspecify.annotations.Nullable;
@@ -57,7 +57,7 @@ public interface AgentEmitter {
      *
      * @param parts las partes a incluir en el artefacto
      */
-    void addArtifact(List<Part<?>> parts);
+    void addArtifact(List<Part> parts);
 
     /**
      * Añade un artefacto con las partes, ID de artefacto, nombre y metadatos indicados.
@@ -223,7 +223,7 @@ public interface AgentEmitter {
      * @param metadata metadatos opcionales a adjuntar al mensaje
      * @return un nuevo objeto Message listo para enviar
      */
-    Message newAgentMessage(List<Part<?>> parts, @Nullable Map<String, Object> metadata);
+    Message newAgentMessage(List<Part> parts, @Nullable Map<String, Object> metadata);
 
     /**
      * Envía un mensaje de texto simple al cliente.
@@ -237,7 +237,7 @@ public interface AgentEmitter {
      *
      * @param parts las partes del mensaje a enviar
      */
-    void sendMessage(List<Part<?>> parts);
+    void sendMessage(List<Part> parts);
 
     /**
      * Envía un mensaje con partes y metadatos al cliente.
@@ -245,7 +245,7 @@ public interface AgentEmitter {
      * @param parts las partes del mensaje a enviar
      * @param metadata metadatos opcionales a adjuntar al mensaje
      */
-    void sendMessage(List<Part<?>> parts, @Nullable Map<String, Object> metadata);
+    void sendMessage(List<Part> parts, @Nullable Map<String, Object> metadata);
 
     /**
      * Envía un objeto Message existente directamente al cliente.
@@ -262,14 +262,6 @@ public interface AgentEmitter {
      * @since 1.0.0
      */
     void addTask(Task task);
-
-    /**
-     * Emite un objeto Event personalizado al cliente.
-     *
-     * @param event el evento a emitir
-     * @since 1.0.0
-     */
-    void emitEvent(Event event);
 
     /**
      * Crea un Task.Builder pre-poblado con los IDs de tarea y contexto correctos.

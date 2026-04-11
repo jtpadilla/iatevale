@@ -1,4 +1,4 @@
-package io.github.jtpadilla.a2a.server.base.service.skill.spi;
+package io.github.jtpadilla.a2a.server.base.lib.spec;
 
 public class A2AError extends Exception {
 
