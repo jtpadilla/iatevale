@@ -26,7 +26,7 @@ public class SimpleAgentCardProvider implements AgentCardProvider {
     private AgentCard.Builder agentCardBuilder() {
 
         final AgentInterface agentInterface = AgentInterface.newBuilder()
-                .setUrl("http://localhost:8080/lf.a2a.v1.A2AService/GetTask")
+                .setUrl("http://localhost:8080/lf.a2a.v1.A2AService")
                 .setProtocolBinding("GRPC")
                 .setProtocolVersion("1.0")
                 .build();
