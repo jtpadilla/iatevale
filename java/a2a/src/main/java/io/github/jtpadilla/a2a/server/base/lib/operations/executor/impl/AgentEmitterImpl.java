@@ -4,6 +4,7 @@ import com.google.lf.a2a.v1.*;
 import com.google.protobuf.Struct;
 import io.github.jtpadilla.a2a.server.base.lib.model.TaskStateUtil;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterEvent;
+import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterMessageEvent;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskArtifactUpdateEvent;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.EmitterTaskStatusUpdateEvent;
 import io.github.jtpadilla.a2a.server.base.lib.spec.A2AError;
@@ -136,67 +137,10 @@ public class AgentEmitterImpl implements Emitter {
                 .setMessageId(UUID.randomUUID().toString());
     }
 
+    @Override
     public void messageSend(Message message) throws EmitterException {
-
-    }
-
-    /**
-     * Envía un mensaje de texto simple al cliente.
-     * Método de conveniencia para agentes que responden con texto plano sin crear una tarea.
-     *
-     * @param text el contenido de texto a enviar
-     */
-    public void sendMessage(String text) {
-        sendMessage(List.of(new TextPart(text)));
-    }
-
-    /**
-     * Envía un mensaje con partes personalizadas (texto, imágenes, etc.) al cliente.
-     * Úsalo para respuestas enriquecidas que no requieren gestión del ciclo de vida de la tarea.
-     *
-     * @param parts las partes del mensaje a enviar
-     */
-    public void sendMessage(List<Part> parts) {
-        sendMessage(parts, null);
-    }
-
-    /**
-     * Envía un mensaje con partes y metadatos al cliente.
-     * Crea un mensaje de agente con los IDs de tarea y contexto actuales (si están disponibles)
-     * y lo encola en la cola de eventos.
-     *
-     * @param parts las partes del mensaje a enviar
-     * @param metadata metadatos opcionales a adjuntar al mensaje
-     */
-    public void sendMessage(List<Part> parts, @Nullable Map<String, Object> metadata) {
-        Message message = newAgentMessage(parts, metadata);
-        eventQueue.enqueueEvent(message);
-    }
-
-    /**
-     * Envía un objeto Message existente directamente al cliente.
-     * <p>
-     * Úsalo cuando necesites reenviar o hacer eco de un mensaje existente sin crear uno nuevo.
-     * El mensaje se encola tal cual, preservando su messageId, metadatos y todos los demás campos.
-     * </p>
-     * <p>
-     * <b>Nota:</b> Se usa típicamente para reenviar mensajes de usuario o preservar propiedades
-     * específicas del mensaje. En la mayoría de los casos, prefiere {@link #sendMessage(String)} o
-     * {@link #sendMessage(List)}, que crean nuevos mensajes de agente con IDs generados.
-     * </p>
-     * <p>Ejemplo de uso:
-     * <pre>{@code
-     * public void execute(RequestContext context, AgentEmitter emitter) {
-     *     // Devuelve el mensaje del usuario como eco
-     *     emitter.sendMessage(context.getMessage());
-     * }
-     * }</pre>
-     *
-     * @param message el mensaje a enviar al cliente
-     * @since 1.0.0
-     */
-    public void sendMessage(Message message) {
-        eventQueue.enqueueEvent(message);
+        // Se encola el evento
+        emitter.accept(new EmitterMessageEvent(message));
     }
 
 

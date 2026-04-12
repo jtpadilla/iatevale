@@ -7,6 +7,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Auxiliar para emitir eventos desde implementaciones de AgentExecutor.
@@ -33,12 +34,11 @@ import java.util.Optional;
 public interface Emitter {
 
     /**
-     * Actualiza el estado de la tarea al estado indicado con un mensaje opcional.
+     * Devuelve el ID de tarea de este emitter.
      *
-     * @param taskState el nuevo estado de la tarea
-     * @param message mensaje opcional a incluir con la actualización de estado
+     * @return el ID de tarea, o null si no hay tarea asociada
      */
-    void updateStatus(TaskState taskState, @Nullable Message message) throws EmitterException;
+    Optional<String> taskId();
 
     /**
      * Devuelve el ID de contexto de este emitter.
@@ -47,15 +47,26 @@ public interface Emitter {
      */
     Optional<String> contextId();
 
-    /**
-     * Devuelve el ID de tarea de este emitter.
-     *
-     * @return el ID de tarea, o null si no hay tarea asociada
-     */
-    Optional<String> taskId();
+
+    /////////////////////////////////////////////////////////////////////////////////
+    // Se envia un mensaje como respuesta sin crear una tarea
+    /////////////////////////////////////////////////////////////////////////////////
 
     // Enviar mensajes si tener una tarea creada
     Message.Builder messageBuilder();
+
+    void messageSend(Message message) throws EmitterException;
+
+
+
+
+    /**
+     * Actualiza el estado de la tarea al estado indicado con un mensaje opcional.
+     *
+     * @param taskState el nuevo estado de la tarea
+     * @param message mensaje opcional a incluir con la actualización de estado
+     */
+    void updateStatus(TaskState taskState, @Nullable Message message) throws EmitterException;
 
     // Actualizar el estado de la tarea
     void taskStatusUpdate(TaskStatus taskStatus) throws EmitterException;
@@ -213,36 +224,6 @@ public interface Emitter {
      * @return un nuevo objeto Message listo para enviar
      */
     Message newAgentMessage(List<Part> parts, @Nullable Map<String, Object> metadata);
-
-    /**
-     * Envía un mensaje de texto simple al cliente.
-     *
-     * @param text el contenido de texto a enviar
-     */
-    void sendMessage(String text);
-
-    /**
-     * Envía un mensaje con partes personalizadas al cliente.
-     *
-     * @param parts las partes del mensaje a enviar
-     */
-    void sendMessage(List<Part> parts);
-
-    /**
-     * Envía un mensaje con partes y metadatos al cliente.
-     *
-     * @param parts las partes del mensaje a enviar
-     * @param metadata metadatos opcionales a adjuntar al mensaje
-     */
-    void sendMessage(List<Part> parts, @Nullable Map<String, Object> metadata);
-
-    /**
-     * Envía un objeto Message existente directamente al cliente.
-     *
-     * @param message el mensaje a enviar al cliente
-     * @since 1.0.0
-     */
-    void sendMessage(Message message);
 
     /**
      * Añade un objeto Task personalizado para enviarlo al cliente.
