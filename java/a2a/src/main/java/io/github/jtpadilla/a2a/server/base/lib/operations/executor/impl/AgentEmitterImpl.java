@@ -5,7 +5,6 @@ import com.google.protobuf.Struct;
 import io.github.jtpadilla.a2a.server.base.lib.model.TaskStateUtil;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.*;
 import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
-import io.github.jtpadilla.a2a.server.base.lib.spec.EmitterException;
 import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
 import org.jspecify.annotations.Nullable;
 
@@ -34,36 +33,36 @@ public class AgentEmitterImpl implements Emitter {
         return Optional.ofNullable(contextId);
     }
 
-    private String taskIdRequired() throws EmitterException {
-        return taskId().orElseThrow(()->new EmitterException("TaskId is missing"));
+    private String taskIdRequired() {
+        return taskId().orElseThrow(()->new IllegalArgumentException("TaskId is missing"));
     }
 
-    private String contextIdRequired() throws EmitterException {
-        return contextId().orElseThrow(()->new EmitterException("ContextId is missing"));
+    private String contextIdRequired() {
+        return contextId().orElseThrow(()->new IllegalArgumentException("ContextId is missing"));
     }
 
     @Override
-    public void messageSend(Message message) throws EmitterException {
+    public void messageSend(Message message) {
         // Se encola el evento
         emitter.accept(new EmitterMessageEvent(message));
     }
 
     @Override
-    public void taskCreate(Task task) throws EmitterException {
+    public void taskCreate(Task task) {
         emitter.accept(new EmitterTaskCreateEvent(task));
     }
 
     @Override
-    public void taskStatusUpdate(TaskStatus taskStatus) throws EmitterException {
+    public void taskStatusUpdate(TaskStatus taskStatus) {
         taskStatusUpdateImpl(taskStatus, null);
     }
 
     @Override
-    public void taskStatusUpdate(TaskStatus taskStatus, Struct metadata) throws EmitterException {
+    public void taskStatusUpdate(TaskStatus taskStatus, Struct metadata) {
         taskStatusUpdateImpl(taskStatus, metadata);
     }
 
-    private void taskStatusUpdateImpl(TaskStatus taskStatus, @Nullable Struct metadata) throws EmitterException {
+    private void taskStatusUpdateImpl(TaskStatus taskStatus, @Nullable Struct metadata) {
 
         final boolean isTerminal = TaskStateUtil.isTerminal(taskStatus.getState());
 
@@ -94,26 +93,26 @@ public class AgentEmitterImpl implements Emitter {
     }
 
     @Override
-    public void taskArtifactUpdate(Artifact artifact) throws EmitterException {
+    public void taskArtifactUpdate(Artifact artifact) {
         taskArtifactUpdateImpl(artifact, false, true, null);
     }
 
     @Override
-    public void taskArtifactUpdate(Artifact artifact, Struct metadata) throws EmitterException {
+    public void taskArtifactUpdate(Artifact artifact, Struct metadata) {
         taskArtifactUpdateImpl(artifact, false, true, metadata);
     }
 
     @Override
-    public void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk) throws EmitterException {
+    public void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk) {
         taskArtifactUpdateImpl(artifact, append, lastChunk, null);
     }
 
     @Override
-    public void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk, Struct metadata) throws EmitterException {
+    public void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk, Struct metadata) {
         taskArtifactUpdateImpl(artifact, append, lastChunk, metadata);
     }
 
-    private void taskArtifactUpdateImpl(Artifact artifact, boolean append, boolean lastChunk, @Nullable Struct metadata) throws EmitterException {
+    private void taskArtifactUpdateImpl(Artifact artifact, boolean append, boolean lastChunk, @Nullable Struct metadata) {
 
         // Se compone el mensaje dirigido al cliente
         final TaskArtifactUpdateEvent.Builder taskArtifactUpdateEvent = TaskArtifactUpdateEvent.newBuilder()

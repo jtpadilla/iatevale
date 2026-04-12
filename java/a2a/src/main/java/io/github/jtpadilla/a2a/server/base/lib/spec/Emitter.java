@@ -13,16 +13,16 @@ public interface Emitter {
     Optional<String> taskId();
     Optional<String> contextId();
 
-    void messageSend(Message message) throws EmitterException;
+    void messageSend(Message message);
 
-    void taskCreate(Task task) throws EmitterException;
+    void taskCreate(Task task);
 
-    void taskStatusUpdate(TaskStatus taskStatus) throws EmitterException;
-    void taskStatusUpdate(TaskStatus taskStatus, Struct metadata) throws EmitterException;
+    void taskStatusUpdate(TaskStatus taskStatus);
+    void taskStatusUpdate(TaskStatus taskStatus, Struct metadata);
 
-    void taskArtifactUpdate(Artifact artifact) throws EmitterException;
-    void taskArtifactUpdate(Artifact artifact, Struct metadata) throws EmitterException;
-    void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk) throws EmitterException;
-    void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk, Struct metadata) throws EmitterException;
+    void taskArtifactUpdate(Artifact artifact);
+    void taskArtifactUpdate(Artifact artifact, Struct metadata);
+    void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk);
+    void taskArtifactUpdate(Artifact artifact, boolean append, boolean lastChunk, Struct metadata);
 
 }
