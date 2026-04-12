@@ -4,8 +4,8 @@ import com.google.lf.a2a.v1.Message;
 import com.google.lf.a2a.v1.Part;
 import com.google.lf.a2a.v1.Role;
 import com.google.lf.a2a.v1.SendMessageRequest;
-import io.github.jtpadilla.a2a.server.base.lib.spec.AgentExecutor;
-import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
+import io.github.jtpadilla.a2a.server.lib.spec.AgentExecutor;
+import io.github.jtpadilla.a2a.server.lib.spec.Emitter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

@@ -4,7 +4,7 @@ import com.google.lf.a2a.v1.AgentCapabilities;
 import com.google.lf.a2a.v1.AgentCard;
 import com.google.lf.a2a.v1.AgentInterface;
 import com.google.lf.a2a.v1.AgentSkill;
-import io.github.jtpadilla.a2a.server.base.provider.agentcard.AgentCardProvider;
+import io.github.jtpadilla.a2a.server.provider.agentcard.AgentCardProvider;
 import io.helidon.service.registry.Service;
 
 import java.util.UUID;
