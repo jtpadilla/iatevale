@@ -1,15 +1,15 @@
 package io.github.jtpadilla.product.simpleagent.agentexecutor;
 
 import io.github.jtpadilla.a2a.server.base.lib.spec.AgentExecutor;
-import io.github.jtpadilla.a2a.server.base.service.agentexecutor.AgentEjecutorService;
+import io.github.jtpadilla.a2a.server.base.provider.agentexecutor.AgentEjecutorProvider;
 import io.helidon.service.registry.Service;
 
 @Service.Singleton
-public class SimpleAgentExecutorService implements AgentEjecutorService {
+public class SimpleAgentExecutorProvider implements AgentEjecutorProvider {
 
     @Override
     public AgentExecutor agentExecutor() {
-        return null;
+        return new SimpleAgentExecutor();
     }
 
 }

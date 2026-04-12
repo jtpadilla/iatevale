@@ -2,7 +2,7 @@ package io.github.jtpadilla.a2a.server.base.resource.http;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
-import io.github.jtpadilla.a2a.server.base.service.agentcard.AgentCardService;
+import io.github.jtpadilla.a2a.server.base.provider.agentcard.AgentCardProvider;
 import io.helidon.service.registry.Service;
 import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.HttpService;
@@ -15,7 +15,7 @@ public class WellKnownHandler implements HttpService {
     private final String agentCardJson;
 
     @Service.Inject
-    public WellKnownHandler(AgentCardService agentCardService) {
+    public WellKnownHandler(AgentCardProvider agentCardService) {
         try {
             this.agentCardJson = JsonFormat.printer()
                     .alwaysPrintFieldsWithNoPresence()

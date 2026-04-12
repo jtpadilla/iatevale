@@ -3,15 +3,15 @@ package io.github.jtpadilla.product.simpleagent.agentcard;
 import com.google.lf.a2a.v1.AgentCapabilities;
 import com.google.lf.a2a.v1.AgentCard;
 import com.google.lf.a2a.v1.AgentInterface;
-import io.github.jtpadilla.a2a.server.base.service.agentcard.AgentCardService;
+import io.github.jtpadilla.a2a.server.base.provider.agentcard.AgentCardProvider;
 import io.helidon.service.registry.Service;
 
 @Service.Singleton
-public class SimpleAgentCardService implements AgentCardService {
+public class SimpleAgentCardProvider implements AgentCardProvider {
 
     final private AgentCard agentCard;
 
-    public SimpleAgentCardService() {
+    public SimpleAgentCardProvider() {
         this.agentCard = agentCardBuilder().build();
     }
 
