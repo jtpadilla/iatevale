@@ -1,4 +1,4 @@
 package io.github.jtpadilla.a2a.common;
 
-public class Common {
+public class Others {
 }

@@ -1,6 +1,7 @@
 package io.github.jtpadilla.a2a.server.base.lib.operations;
 
 import com.google.lf.a2a.v1.*;
+import io.github.jtpadilla.a2a.common.verifier.A2AVerifier;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.EmitterImpl;
 import io.github.jtpadilla.a2a.server.base.lib.spec.AgentExecutor;
 import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
@@ -25,8 +26,9 @@ public class Operations {
 
     public void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
         LOGGER.info("Operation sendMessage: " + request.getMessage().getMessageId());
-        final Emitter emitter = new EmitterImpl(null, request);
-        agentExecutor.execute(request, emitter);
+        final SendMessageRequest validatedRequest = A2AVerifier.verify(request);
+        final Emitter emitter = new EmitterImpl(null, validatedRequest);
+        agentExecutor.execute(validatedRequest, emitter);
         responseObserver.onError(Status.UNIMPLEMENTED.asRuntimeException());
     }
 
