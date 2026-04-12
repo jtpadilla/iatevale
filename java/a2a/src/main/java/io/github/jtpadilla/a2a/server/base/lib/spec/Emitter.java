@@ -13,7 +13,6 @@ public interface Emitter {
     Optional<String> taskId();
     Optional<String> contextId();
 
-    Message.Builder messageBuilder();
     void messageSend(Message message) throws EmitterException;
 
     void taskCreate(Task task) throws EmitterException;

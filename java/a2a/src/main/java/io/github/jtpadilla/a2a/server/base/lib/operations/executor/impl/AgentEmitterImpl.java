@@ -44,13 +44,6 @@ public class AgentEmitterImpl implements Emitter {
     }
 
     @Override
-    public Message.Builder messageBuilder() {
-        return Message.newBuilder()
-                .setRole(Role.ROLE_AGENT)
-                .setMessageId(UUID.randomUUID().toString());
-    }
-
-    @Override
     public void messageSend(Message message) throws EmitterException {
         // Se encola el evento
         emitter.accept(new EmitterMessageEvent(message));

@@ -1,6 +1,7 @@
 package io.github.jtpadilla.a2a.server.base.lib.operations;
 
 import com.google.lf.a2a.v1.*;
+import io.github.jtpadilla.a2a.server.base.lib.spec.AgentExecutor;
 import io.github.jtpadilla.a2a.server.base.provider.agentexecutor.AgentEjecutorProvider;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
@@ -13,11 +14,11 @@ public class Operations {
 
     final Logger LOGGER = Logger.getLogger(Operations.class.getName());
 
-    final private AgentEjecutorProvider agentEjecutorProvider;
+    final private AgentExecutor agentExecutor;
 
     @Service.Inject
     public Operations(AgentEjecutorProvider agentEjecutorProvider) {
-        this.agentEjecutorProvider = agentEjecutorProvider;
+        this.agentExecutor = agentEjecutorProvider.agentExecutor();
     }
 
     public void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
