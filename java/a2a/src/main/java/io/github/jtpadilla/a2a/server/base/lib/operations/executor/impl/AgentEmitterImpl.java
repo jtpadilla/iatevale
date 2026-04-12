@@ -125,7 +125,6 @@ public class AgentEmitterImpl implements Emitter {
         return contextId().orElseThrow(()->new EmitterException("ContextId is missing"));
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////
     // Se envia un mensaje como respuesta sin crear una tarea
     /////////////////////////////////////////////////////////////////////////////////
@@ -142,9 +141,6 @@ public class AgentEmitterImpl implements Emitter {
         // Se encola el evento
         emitter.accept(new EmitterMessageEvent(message));
     }
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////////
     // Se le envia al cliente la actualizacion del estado de una tarea

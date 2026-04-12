@@ -48,10 +48,6 @@ public interface Emitter {
     Optional<String> contextId();
 
 
-    /////////////////////////////////////////////////////////////////////////////////
-    // Se envia un mensaje como respuesta sin crear una tarea
-    /////////////////////////////////////////////////////////////////////////////////
-
     // Enviar mensajes si tener una tarea creada
     Message.Builder messageBuilder();
 
