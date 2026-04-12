@@ -7,11 +7,11 @@ import io.github.jtpadilla.a2a.server.base.service.agentcard.AgentCardService;
 import io.helidon.service.registry.Service;
 
 @Service.Singleton
-public class SimpleAgentCard implements AgentCardService {
+public class SimpleAgentCardService implements AgentCardService {
 
     final private AgentCard agentCard;
 
-    public SimpleAgentCard() {
+    public SimpleAgentCardService() {
         this.agentCard = agentCardBuilder().build();
     }
 
