@@ -5,7 +5,6 @@ import com.google.protobuf.Struct;
 import io.github.jtpadilla.a2a.server.base.lib.model.TaskStateUtil;
 import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.event.*;
 import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
-import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
@@ -15,14 +14,20 @@ import java.util.function.Consumer;
 public class AgentEmitterImpl implements Emitter {
 
     private final Consumer<EmitterEvent> emitter;
-    private final String taskId;
+    @Nullable
     private final String contextId;
+    @Nullable
+    private final String taskId;
     private final AtomicBoolean terminalStateReached = new AtomicBoolean(false);
 
-    public AgentEmitterImpl(RequestContext context, Consumer<EmitterEvent> emitter) {
+    public AgentEmitterImpl(Consumer<EmitterEvent> emitter, SendMessageRequest sendMessageRequest) {
         this.emitter = emitter;
-        this.taskId = context.getTaskId();
-        this.contextId = context.getContextId();
+        if (!sendMessageRequest.hasMessage()) {
+            throw new IllegalArgumentException("SendMessageRequest must have a message");
+        }
+        final Message message = sendMessageRequest.getMessage();
+        this.contextId = message.getContextId().isBlank() ? null : message.getContextId().trim();
+        this.taskId = message.getTaskId().isBlank() ? null : message.getTaskId().trim();
     }
 
     public Optional<String> taskId() {
