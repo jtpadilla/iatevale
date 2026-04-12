@@ -10,7 +10,6 @@ import io.github.jtpadilla.a2a.server.base.lib.spec.RequestContext;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
