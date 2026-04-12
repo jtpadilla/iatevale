@@ -1,7 +1,9 @@
 package io.github.jtpadilla.a2a.server.base.lib.operations;
 
 import com.google.lf.a2a.v1.*;
+import io.github.jtpadilla.a2a.server.base.lib.operations.executor.impl.EmitterImpl;
 import io.github.jtpadilla.a2a.server.base.lib.spec.AgentExecutor;
+import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
 import io.github.jtpadilla.a2a.server.base.provider.agentexecutor.AgentEjecutorProvider;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
@@ -23,6 +25,8 @@ public class Operations {
 
     public void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
         LOGGER.info("Operation sendMessage: " + request.getMessage().getMessageId());
+        final Emitter emitter = new EmitterImpl(null, request);
+        agentExecutor.execute(request, emitter);
         responseObserver.onError(Status.UNIMPLEMENTED.asRuntimeException());
     }
 

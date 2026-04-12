@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-public class AgentEmitterImpl implements Emitter {
+public class EmitterImpl implements Emitter {
 
     private final Consumer<EmitterEvent> emitter;
     @Nullable
@@ -20,7 +20,7 @@ public class AgentEmitterImpl implements Emitter {
     private final String taskId;
     private final AtomicBoolean terminalStateReached = new AtomicBoolean(false);
 
-    public AgentEmitterImpl(Consumer<EmitterEvent> emitter, SendMessageRequest sendMessageRequest) {
+    public EmitterImpl(Consumer<EmitterEvent> emitter, SendMessageRequest sendMessageRequest) {
         this.emitter = emitter;
         if (!sendMessageRequest.hasMessage()) {
             throw new IllegalArgumentException("SendMessageRequest must have a message");

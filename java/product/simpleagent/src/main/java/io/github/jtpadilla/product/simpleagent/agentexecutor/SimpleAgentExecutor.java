@@ -4,7 +4,6 @@ import com.google.lf.a2a.v1.Message;
 import com.google.lf.a2a.v1.Part;
 import com.google.lf.a2a.v1.Role;
 import com.google.lf.a2a.v1.SendMessageRequest;
-import io.github.jtpadilla.a2a.server.base.lib.spec.A2AError;
 import io.github.jtpadilla.a2a.server.base.lib.spec.AgentExecutor;
 import io.github.jtpadilla.a2a.server.base.lib.spec.Emitter;
 
@@ -14,7 +13,7 @@ import java.util.UUID;
 public class SimpleAgentExecutor implements AgentExecutor {
 
     @Override
-    public void execute(SendMessageRequest sendMessageRequest, Emitter emitter) throws A2AError {
+    public void execute(SendMessageRequest sendMessageRequest, Emitter emitter) {
 
         final Part part = Part.newBuilder().setText(LocalDateTime.now().toString())
                 .build();
@@ -30,7 +29,7 @@ public class SimpleAgentExecutor implements AgentExecutor {
     }
 
     @Override
-    public void cancel(SendMessageRequest sendMessageRequest, Emitter emitter) throws A2AError {
+    public void cancel(SendMessageRequest sendMessageRequest, Emitter emitter) {
 
     }
 
