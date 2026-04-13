@@ -3,14 +3,39 @@ package io.github.jtpadilla.product.langchain4jexample.schema;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
+import dev.langchain4j.model.chat.request.json.JsonNumberSchema;
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
+import dev.langchain4j.model.chat.request.json.JsonSchema;
+import dev.langchain4j.model.chat.request.json.JsonStringSchema;
 import io.github.jtpadilla.langchain4j.schema.SchemaEnabled;
 import io.github.jtpadilla.langchain4j.schema.SchemaException;
 import io.github.jtpadilla.langchain4j.schema.SchemaGson;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class CityDataSchema implements SchemaEnabled {
+
+    // 1. Definimos las propiedades de forma individual
+    public static final JsonObjectSchema SCHEMA_PROPERTIES = JsonObjectSchema.builder()
+            .addProperty("city", JsonStringSchema.builder()
+                    .description("Nombre de la ciudad")
+                    .build())
+            .addProperty("localDateTime", JsonStringSchema.builder()
+                    .description("Fecha y hora de la medición de la temperatura en formato ISO-8601")
+                    .build())
+            .addProperty("temperature", JsonNumberSchema.builder()
+                    .description("Temperatura en grados centígrados")
+                    .build())
+            .required(List.of("city", "localDateTime", "temperature"))
+            .build();
+
+    // 2. Creamos el JsonSchema final que se le pasa al modelo
+    public static final JsonSchema EXPLICIT_SCHEMA = JsonSchema.builder()
+            .name("TemperatureRecord") // Nombre del esquema
+            .rootElement(SCHEMA_PROPERTIES)
+            .build();
 
     /** Descripción JSON del esquema, usada en los prompts para guiar la estructura de respuesta. */
     public static final String SCHEMA_JSON = """
@@ -19,10 +44,10 @@ public class CityDataSchema implements SchemaEnabled {
               "description": "Registro de temperatura de una ciudad en un momento determinado",
               "properties": {
                 "city":          { "type": "string", "description": "Nombre de la ciudad" },
-                "localdatetime": { "type": "string", "description": "Fecha y hora en formato ISO-8601 sin zona horaria (AAAA-MM-DDThh:mm:ss)" },
+                "localDateTime": { "type": "string", "description": "Fecha y hora de la medición de la temperatura en formato ISO-8601" },
                 "temperature":   { "type": "number", "description": "Temperatura en grados centígrados" }
               },
-              "required": ["city", "localdatetime", "temperature"]
+              "required": ["city", "localDateTime", "temperature"]
             }
             """;
 
@@ -39,7 +64,7 @@ public class CityDataSchema implements SchemaEnabled {
     @SerializedName("city")
     private final String city;
 
-    @SerializedName("localdatetime")
+    @SerializedName("localDateTime")
     private final LocalDateTime localDateTime;
 
     @SerializedName("temperature")

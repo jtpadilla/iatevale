@@ -1,5 +1,9 @@
 package io.github.jtpadilla.product.langchain4jexample.schema;
 
+import dev.langchain4j.model.chat.request.json.JsonArraySchema;
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
+import dev.langchain4j.model.chat.request.json.JsonSchema;
+import dev.langchain4j.model.chat.request.json.JsonStringSchema;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
@@ -11,6 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CityListSchema implements SchemaEnabled {
+
+    public static final JsonObjectSchema SCHEMA_PROPERTIES = JsonObjectSchema.builder()
+            .addProperty("list", JsonArraySchema.builder()
+                    .items(JsonStringSchema.builder().description("Nombre de la ciudad").build())
+                    .description("Lista de nombres de ciudades")
+                    .build())
+            .required(List.of("list"))
+            .build();
+
+    public static final JsonSchema EXPLICIT_SCHEMA = JsonSchema.builder()
+            .name("CityList")
+            .rootElement(SCHEMA_PROPERTIES)
+            .build();
 
     /** Descripción JSON del esquema, usada en los prompts para guiar la estructura de respuesta. */
     public static final String SCHEMA_JSON = """

@@ -2,7 +2,7 @@ package io.github.jtpadilla.product.langchain4jexample.agent.querycitiesdataagen
 
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatRequest;
+import dev.langchain4j.model.chat.request.ChatRequest;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import io.github.jtpadilla.langchain4j.agent.AgentException;
 import io.github.jtpadilla.langchain4j.agent.AgentResources;
