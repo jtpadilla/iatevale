@@ -1,0 +1,20 @@
+load("@rules_java//java:defs.bzl", "java_library")
+
+package(default_visibility = ["//visibility:public"])
+
+java_library(
+    name = "langchain4j",
+    srcs = glob(["src/main/java/**/*.java"]),
+    exports = [
+        "@maven//:dev_langchain4j_langchain4j_core",
+        "@maven//:dev_langchain4j_langchain4j_google_ai_gemini",
+    ],
+    deps = [
+        "//java/util/gson",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:dev_langchain4j_langchain4j_core",
+        "@maven//:dev_langchain4j_langchain4j_google_ai_gemini",
+        "@maven//:io_helidon_config_helidon_config",
+        "@maven//:org_jspecify_jspecify",
+    ],
+)

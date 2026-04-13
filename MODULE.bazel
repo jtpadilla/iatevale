@@ -53,6 +53,10 @@ maven.install(
         ## Librerias para interactuar con Gemini
         "com.google.genai:google-genai:1.46.0",
 
+        ## LangChain4j
+        "dev.langchain4j:langchain4j-core:1.2.0",
+        "dev.langchain4j:langchain4j-google-ai-gemini:1.2.0",
+
         ## Tests complejos
         "org.awaitility:awaitility:4.1.1",
         "org.mockito:mockito-core:jar:5.20.0",
