@@ -11,8 +11,8 @@ public class GenAIServiceDefault implements GenAIService {
     private final String apiKey;
 
     public GenAIServiceDefault() {
-        this.apiKey = Config.global().get("aistudio-api-key").asString().orElseThrow(
-            () -> new IllegalStateException("Configuration key 'aistudio-api-key' is required")
+        this.apiKey = Config.global().get("gemini-api-key").asString().orElseThrow(
+            () -> new IllegalStateException("Configuration key 'gemini-api-key' is required")
         );
     }
 

@@ -16,8 +16,8 @@ public class Lc4jServiceDefault implements Lc4jService {
     private final String apiKey;
 
     public Lc4jServiceDefault() {
-        this.apiKey = Config.global().get("aistudio-api-key").asString().orElseThrow(
-            () -> new IllegalStateException("Configuration key 'aistudio-api-key' is required")
+        this.apiKey = Config.global().get("gemini-api-key").asString().orElseThrow(
+            () -> new IllegalStateException("Configuration key 'gemini-api-key' is required")
         );
     }
 
